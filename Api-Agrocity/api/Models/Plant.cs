@@ -1,6 +1,5 @@
 ﻿namespace Api.Models;
 
-namespace api.Models
 public partial class Plant
 {
     public int PlantId { get; set; }
