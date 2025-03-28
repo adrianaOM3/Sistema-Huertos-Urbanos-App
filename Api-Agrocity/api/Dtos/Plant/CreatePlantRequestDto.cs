@@ -4,7 +4,7 @@ namespace api.Dtos.Plant
 {
     public class CreatePlantRequestDto
     {
-        public string Name { get; set; }
+        public string plantName { get; set; }
         public string ScientificName { get; set; }
         public string Description { get; set; }
         public string GrowthCycle { get; set; }

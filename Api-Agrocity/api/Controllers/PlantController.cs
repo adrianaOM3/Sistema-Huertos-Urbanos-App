@@ -33,7 +33,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var plant = await _context.Plants.FirstOrDefaultAsync(p => p.Id == id);
+            var plant = await _context.Plants.FirstOrDefaultAsync(p => p.plantId == id);
             if (plant == null)
             {
                 return NotFound();
@@ -48,14 +48,14 @@ namespace api.Controllers
             var plantModel = PlantMapper.ToPlantFromCreateDto(plantDto); // Usar el mapper para convertir el DTO a la entidad
             await _context.Plants.AddAsync(plantModel);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = plantModel.Id }, PlantMapper.ToDto(plantModel)); // Usar el mapper para convertir a DTO
+            return CreatedAtAction(nameof(GetById), new { id = plantModel.plantId }, PlantMapper.ToDto(plantModel)); // Usar el mapper para convertir a DTO
         }
 
         // Actualizar una planta existente
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePlantRequestDto plantDto)
         {
-            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.Id == id);
+            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.plantId == id);
             if (plantModel == null)
             {
                 return NotFound();
@@ -63,22 +63,22 @@ namespace api.Controllers
 
             // Usar el mapper para actualizar los valores
             var updatedPlant = PlantMapper.ToPlantFromUpdateDto(plantDto);
-            plantModel.Name = updatedPlant.Name;
+            plantModel.plantName = updatedPlant.plantName;
             plantModel.ScientificName = updatedPlant.ScientificName;
             plantModel.Description = updatedPlant.Description;
             plantModel.GrowthCycle = updatedPlant.GrowthCycle;
-            plantModel.Watering = updatedPlant.Watering;
+            plantModel.wateringFrequency = updatedPlant.wateringFrequency;
             plantModel.HardinessZone = updatedPlant.HardinessZone;
             plantModel.HardinessZoneDescription = updatedPlant.HardinessZoneDescription;
-            plantModel.Flowers = updatedPlant.Flowers;
-            plantModel.Sun = updatedPlant.Sun;
-            plantModel.Fruits = updatedPlant.Fruits;
-            plantModel.Edible = updatedPlant.Edible;
-            plantModel.Leaf = updatedPlant.Leaf;
+            plantModel.flowerDetails = updatedPlant.flowerDetails;
+            plantModel.sunExposure = updatedPlant.sunExposure;
+            plantModel.fruitDetails = updatedPlant.fruitDetails;
+            plantModel.isEdible = updatedPlant.isEdible;
+            plantModel.hasLeaves = updatedPlant.hasLeaves;
             plantModel.LeafColor = updatedPlant.LeafColor;
             plantModel.GrowthRate = updatedPlant.GrowthRate;
-            plantModel.Maintenance = updatedPlant.Maintenance;
-            plantModel.SaltTolerant = updatedPlant.SaltTolerant;
+            plantModel.maintenanceLevel = updatedPlant.maintenanceLevel;
+            plantModel.isSaltTolerant = updatedPlant.isSaltTolerant;
             plantModel.CareLevel = updatedPlant.CareLevel;
 
             await _context.SaveChangesAsync();
@@ -90,7 +90,7 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.Id == id);
+            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.plantId == id);
             if (plantModel == null)
             {
                 return NotFound();

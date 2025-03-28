@@ -10,23 +10,23 @@ namespace api.Mappers
         {
             return new PlantDto
             {
-                Id = plant.Id,
-                Name = plant.Name,
+                plantId = plant.plantId,
+                plantName = plant.plantName,
                 ScientificName = plant.ScientificName,
                 Description = plant.Description,
                 GrowthCycle = plant.GrowthCycle,
-                Watering = plant.Watering,
+                Watering = plant.wateringFrequency,
                 HardinessZone = plant.HardinessZone,
                 HardinessZoneDescription = plant.HardinessZoneDescription,
-                Flowers = plant.Flowers,
-                Sun = plant.Sun,
-                Fruits = plant.Fruits,
-                Edible = plant.Edible,
-                Leaf = plant.Leaf,
+                Flowers = plant.flowerDetails,
+                Sun = plant.sunExposure,
+                Fruits = plant.fruitDetails,
+                Edible = plant.isEdible,
+                Leaf = plant.hasLeaves,
                 LeafColor = plant.LeafColor,
                 GrowthRate = plant.GrowthRate,
-                Maintenance = plant.Maintenance,
-                SaltTolerant = plant.SaltTolerant,
+                Maintenance = plant.maintenanceLevel,
+                SaltTolerant = plant.isSaltTolerant,
                 CareLevel = plant.CareLevel
             };
         }
@@ -36,22 +36,22 @@ namespace api.Mappers
         {
             return new Plant
             {
-                Name = createPlantRequest.Name,
+                plantName = createPlantRequest.plantName,
                 ScientificName = createPlantRequest.ScientificName,
                 Description = createPlantRequest.Description,
                 GrowthCycle = createPlantRequest.GrowthCycle,
-                Watering = createPlantRequest.Watering,
+                wateringFrequency = createPlantRequest.Watering,
                 HardinessZone = createPlantRequest.HardinessZone,
                 HardinessZoneDescription = createPlantRequest.HardinessZoneDescription,
-                Flowers = createPlantRequest.Flowers,
-                Sun = createPlantRequest.Sun,
-                Fruits = createPlantRequest.Fruits,
-                Edible = createPlantRequest.Edible,
-                Leaf = createPlantRequest.Leaf,
+                flowerDetails = createPlantRequest.Flowers,
+                sunExposure = createPlantRequest.Sun,
+                fruitDetails = createPlantRequest.Fruits,
+                isEdible = createPlantRequest.Edible,
+                hasLeaves = createPlantRequest.Leaf,
                 LeafColor = createPlantRequest.LeafColor,
                 GrowthRate = createPlantRequest.GrowthRate,
-                Maintenance = createPlantRequest.Maintenance,
-                SaltTolerant = createPlantRequest.SaltTolerant,
+                maintenanceLevel = createPlantRequest.Maintenance,
+                isSaltTolerant = createPlantRequest.SaltTolerant,
                 CareLevel = createPlantRequest.CareLevel
             };
         }
@@ -61,22 +61,22 @@ namespace api.Mappers
         {
             return new Plant
             {
-                Name = updatePlantRequest.Name,
+                plantName = updatePlantRequest.plantName,
                 ScientificName = updatePlantRequest.ScientificName,
                 Description = updatePlantRequest.Description,
                 GrowthCycle = updatePlantRequest.GrowthCycle,
-                Watering = updatePlantRequest.Watering,
+                wateringFrequency = updatePlantRequest.Watering,
                 HardinessZone = updatePlantRequest.HardinessZone,
                 HardinessZoneDescription = updatePlantRequest.HardinessZoneDescription,
-                Flowers = updatePlantRequest.Flowers,
-                Sun = updatePlantRequest.Sun,
-                Fruits = updatePlantRequest.Fruits,
-                Edible = updatePlantRequest.Edible,
-                Leaf = updatePlantRequest.Leaf,
+                flowerDetails = updatePlantRequest.Flowers,
+                sunExposure = updatePlantRequest.Sun,
+                fruitDetails = updatePlantRequest.Fruits,
+                isEdible = updatePlantRequest.Edible,
+                hasLeaves = updatePlantRequest.Leaf,
                 LeafColor = updatePlantRequest.LeafColor,
                 GrowthRate = updatePlantRequest.GrowthRate,
-                Maintenance = updatePlantRequest.Maintenance,
-                SaltTolerant = updatePlantRequest.SaltTolerant,
+                maintenanceLevel = updatePlantRequest.Maintenance,
+                isSaltTolerant = updatePlantRequest.SaltTolerant,
                 CareLevel = updatePlantRequest.CareLevel
             };
         }
