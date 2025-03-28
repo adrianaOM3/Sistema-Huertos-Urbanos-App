@@ -1,6 +1,6 @@
-using api.Models;
-using api.Dtos.Plant;
-using api.Mappers; // Asegúrate de incluir la clase PlantMapper
+using Api.Models;
+using Api.Dtos.Plant;
+using Api.Mappers; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var plant = await _context.Plants.FirstOrDefaultAsync(p => p.plantId == id);
+            var plant = await _context.Plants.FirstOrDefaultAsync(p => p.PlantId == id);
             if (plant == null)
             {
                 return NotFound();
@@ -48,14 +48,14 @@ namespace api.Controllers
             var plantModel = PlantMapper.ToPlantFromCreateDto(plantDto); // Usar el mapper para convertir el DTO a la entidad
             await _context.Plants.AddAsync(plantModel);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = plantModel.plantId }, PlantMapper.ToDto(plantModel)); // Usar el mapper para convertir a DTO
+            return CreatedAtAction(nameof(GetById), new { id = plantModel.PlantId }, PlantMapper.ToDto(plantModel)); // Usar el mapper para convertir a DTO
         }
 
         // Actualizar una planta existente
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePlantRequestDto plantDto)
         {
-            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.plantId == id);
+            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.PlantId == id);
             if (plantModel == null)
             {
                 return NotFound();
@@ -63,22 +63,22 @@ namespace api.Controllers
 
             // Usar el mapper para actualizar los valores
             var updatedPlant = PlantMapper.ToPlantFromUpdateDto(plantDto);
-            plantModel.plantName = updatedPlant.plantName;
+            plantModel.PlantName = updatedPlant.PlantName;
             plantModel.ScientificName = updatedPlant.ScientificName;
             plantModel.Description = updatedPlant.Description;
             plantModel.GrowthCycle = updatedPlant.GrowthCycle;
-            plantModel.wateringFrequency = updatedPlant.wateringFrequency;
+            plantModel.WateringFrequency = updatedPlant.WateringFrequency;
             plantModel.HardinessZone = updatedPlant.HardinessZone;
             plantModel.HardinessZoneDescription = updatedPlant.HardinessZoneDescription;
-            plantModel.flowerDetails = updatedPlant.flowerDetails;
-            plantModel.sunExposure = updatedPlant.sunExposure;
-            plantModel.fruitDetails = updatedPlant.fruitDetails;
-            plantModel.isEdible = updatedPlant.isEdible;
-            plantModel.hasLeaves = updatedPlant.hasLeaves;
+            plantModel.FlowerDetails = updatedPlant.FlowerDetails;
+            plantModel.SunExposure = updatedPlant.SunExposure;
+            plantModel.FruitDetails = updatedPlant.FruitDetails;
+            plantModel.IsEdible = updatedPlant.IsEdible;
+            plantModel.HasLeaves = updatedPlant.HasLeaves;
             plantModel.LeafColor = updatedPlant.LeafColor;
             plantModel.GrowthRate = updatedPlant.GrowthRate;
-            plantModel.maintenanceLevel = updatedPlant.maintenanceLevel;
-            plantModel.isSaltTolerant = updatedPlant.isSaltTolerant;
+            plantModel.MaintenanceLevel = updatedPlant.MaintenanceLevel;
+            plantModel.IsSaltTolerant = updatedPlant.IsSaltTolerant;
             plantModel.CareLevel = updatedPlant.CareLevel;
 
             await _context.SaveChangesAsync();
@@ -90,7 +90,7 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.plantId == id);
+            var plantModel = await _context.Plants.FirstOrDefaultAsync(p => p.PlantId == id);
             if (plantModel == null)
             {
                 return NotFound();

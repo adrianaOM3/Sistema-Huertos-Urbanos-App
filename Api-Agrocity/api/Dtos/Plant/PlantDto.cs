@@ -1,4 +1,4 @@
-namespace api.Dtos.Plant
+namespace Api.Dtos.Plant
 {
     public class PlantDto
     {

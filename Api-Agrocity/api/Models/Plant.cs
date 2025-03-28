@@ -1,29 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿namespace Api.Models;
 
 namespace api.Models
+public partial class Plant
 {
-    public class Plant
-    {
-        public int plantId { get; set; }
-        public string plantName { get; set; }
-        public string ScientificName { get; set; }
-        public string Description { get; set; }
-        public string GrowthCycle { get; set; }
-        public string wateringFrequency { get; set; }
-        public string HardinessZone { get; set; }
-        public string HardinessZoneDescription { get; set; }
-        public string flowerDetails { get; set; }
-        public string sunExposure { get; set; }
-        public string fruitDetails { get; set; }
-        public bool isEdible { get; set; }
-        public bool hasLeaves { get; set; }
-        public string LeafColor { get; set; }
-        public string GrowthRate { get; set; }
-        public string maintenanceLevel { get; set; }
-        public bool isSaltTolerant { get; set; }
-        public string CareLevel { get; set; }
-    }
+    public int PlantId { get; set; }
+
+    public string PlantName { get; set; } = null!;
+
+    public string? ScientificName { get; set; }
+
+    public string? Description { get; set; }
+
+    public string? GrowthCycle { get; set; }
+
+    public string? WateringFrequency { get; set; }
+
+    public string? HardinessZone { get; set; }
+
+    public string? HardinessZoneDescription { get; set; }
+
+    public string? FlowerDetails { get; set; }
+
+    public string? SunExposure { get; set; }
+
+    public string? FruitDetails { get; set; }
+
+    public bool? IsEdible { get; set; }
+
+    public bool? HasLeaves { get; set; }
+
+    public string? LeafColor { get; set; }
+
+    public string? GrowthRate { get; set; }
+
+    public string? MaintenanceLevel { get; set; }
+
+    public bool? IsSaltTolerant { get; set; }
+
+    public string? CareLevel { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? LastModified { get; set; }
+
+    public virtual ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
+
+    public virtual ICollection<Pest> Pests { get; set; } = new List<Pest>();
 }
