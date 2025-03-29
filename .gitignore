@@ -398,3 +398,17 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Configuraciones de IDE/Editor
+.vs/
+.idea/
+*.user
+*.suo
+*.userprefs
+
+
+
+Api-Agrocity/Api/appsettings.Development.json
+Api-Agrocity/Api/Models/UrbanGardeningContext.cs
+Api-Agrocity/Api/appsettings.Development.json
+Api-Agrocity/Api/Models/UrbanGardeningContext.cs
