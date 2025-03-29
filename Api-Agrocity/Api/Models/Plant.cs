@@ -45,7 +45,9 @@ public partial class Plant
 
     public DateTime? LastModified { get; set; }
 
-    public virtual ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
+
+
+ public virtual ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
 
     public virtual ICollection<Pest> Pests { get; set; } = new List<Pest>();
 }
