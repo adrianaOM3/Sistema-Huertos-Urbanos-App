@@ -28,8 +28,10 @@ namespace Api.Controllers
         {
             var modelUser = new User
             {
+                Name = userDto.Name,
                 FirstName = userDto.FirstName,
                 Surname = userDto.Surname,
+                Age = userDto.Age,
                 Email = userDto.Email,
                 Password = _utils.EncriptarSHA256(userDto.Password),
                 Telephone = userDto.Telephone,
