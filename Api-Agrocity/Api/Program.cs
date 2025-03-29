@@ -48,6 +48,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Logging.AddConsole().SetMinimumLevel(LogLevel.Debug);
+
+
 
 var app = builder.Build();
 
