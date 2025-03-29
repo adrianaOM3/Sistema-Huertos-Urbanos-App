@@ -153,8 +153,11 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Pest", b =>
                 {
                     b.Property<int>("PestId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("pestId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PestId"));
 
                     b.Property<string>("CommonName")
                         .HasMaxLength(255)

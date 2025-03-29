@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(UrbanGardeningContext))]
-    [Migration("20250328222536_InitialCreate")]
+    [Migration("20250329091939_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -156,8 +156,11 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Pest", b =>
                 {
                     b.Property<int>("PestId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("pestId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PestId"));
 
                     b.Property<string>("CommonName")
                         .HasMaxLength(255)

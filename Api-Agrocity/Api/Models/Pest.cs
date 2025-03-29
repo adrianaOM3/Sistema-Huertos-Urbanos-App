@@ -20,4 +20,5 @@ public partial class Pest
     public string? ImageUrl { get; set; }
 
     public virtual ICollection<Plant> Plants { get; set; } = new List<Plant>();
+
 }
