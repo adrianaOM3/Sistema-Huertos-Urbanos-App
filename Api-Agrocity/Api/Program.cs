@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuración del DbContext (usa el nombre exacto de tu clase generada)
+// Configuración del DbContext
 builder.Services.AddDbContext<UrbanGardeningContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
