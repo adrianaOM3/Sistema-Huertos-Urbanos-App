@@ -53,7 +53,7 @@ namespace Api.Custom
             // Configurar los detalles del token
             var jwtConfig = new JwtSecurityToken(
                 claims: userClaims,
-                expires: DateTime.UtcNow.AddMinutes(60), // Token válido por 1 hora
+                expires: DateTime.UtcNow.AddMinutes(10), // Token válido por 1 hora
                 signingCredentials: credentials
             );
 

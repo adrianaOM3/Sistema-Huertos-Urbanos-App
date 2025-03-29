@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers
 {
     [Route("api/plants")]
+    [Authorize]
     [ApiController]
     public class PlantController : ControllerBase
     {
