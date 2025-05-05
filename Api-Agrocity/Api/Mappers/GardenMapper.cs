@@ -1,4 +1,5 @@
 using Api.Models.DTOs.Garden;
+
 using Api.Models;
 
 namespace Api.Mappers
@@ -11,6 +12,7 @@ namespace Api.Mappers
       {
         GardenId = gardenItem.GardenId,
         UserId = gardenItem.UserId,
+        UserName = gardenItem.User != null ? gardenItem.User.Name : null,
         Name = gardenItem.Name,
         Description = gardenItem.Description,
         CreatedAt = gardenItem.CreatedAt
