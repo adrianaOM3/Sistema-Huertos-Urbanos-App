@@ -15,7 +15,9 @@ namespace Api.Mappers
         UserName = gardenItem.User != null ? gardenItem.User.Name : null,
         Name = gardenItem.Name,
         Description = gardenItem.Description,
-        CreatedAt = gardenItem.CreatedAt
+        CreatedAt = gardenItem.CreatedAt,
+        ImageUrl = gardenItem.ImageUrl,
+       
         
       };
     }

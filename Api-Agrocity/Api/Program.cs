@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 
+using Microsoft.Extensions.FileProviders;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -67,5 +69,15 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+
+
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "UploadedImages")),
+    RequestPath = "/uploads"
+});
 
 app.Run();

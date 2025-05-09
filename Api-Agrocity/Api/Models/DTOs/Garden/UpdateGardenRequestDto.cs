@@ -25,5 +25,7 @@ namespace Api.Models.DTOs.Garden
     [Required(ErrorMessage = "La fecha de creación es obligatoria.")]
     [DataType(DataType.Date)]
     public DateTime? CreatedAt { get; set; }
+
+      public IFormFile? File { get; set; }
   }
 }
