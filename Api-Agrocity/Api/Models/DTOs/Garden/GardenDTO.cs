@@ -12,5 +12,8 @@ namespace Api.Models.DTOs.Garden
 
     public DateTime? CreatedAt { get; set; }
 
+
+    public string? UserName { get; set; }
+
   }
 }

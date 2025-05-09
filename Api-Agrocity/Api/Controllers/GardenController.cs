@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Api.Mappers;
+using Api.Models.DTOs;
 
 namespace Api.Controllers
 {
@@ -23,7 +24,9 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllGarden()
         {
-            var gardens = await _context.Gardens.ToListAsync();
+            var gardens = await _context.Gardens
+            .Include(g => g.User) 
+            .ToListAsync();
             var gardensDto = gardens.Select(gardens => gardens.ToDto());
             return Ok(gardensDto);
         }
@@ -32,12 +35,28 @@ namespace Api.Controllers
         [HttpGet("{gardenId}")]
         public async Task<IActionResult> getByIdGardens([FromRoute] int gardenId)
         {
-            var _garden = await _context.Gardens.FirstOrDefaultAsync(gar => gar.GardenId == gardenId);
-            if (_garden == null)
+
+
+
+            var garden = await _context.Gardens
+             .Include(g => g.User)
+            .FirstOrDefaultAsync(g => g.GardenId == gardenId);
+
+            if (garden == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    message = "Jardín no encontrado."
+                });
             }
-            return Ok(_garden.ToDto());
+            return Ok(new
+            {
+                message = "Jardín encontrado.",
+                data = garden.ToDto()
+            });
+
+
+
         }
 
         //Endpoint new create Gardens
@@ -55,12 +74,18 @@ namespace Api.Controllers
         [Route("{gardenId}")]
         public async Task<IActionResult> UpdateGarden([FromRoute] int gardenId, [FromBody] UpdateGardenRequestDto gardenDto)
         {
-            var gardenModel = await _context.Gardens.FirstOrDefaultAsync(_garden => _garden.GardenId == gardenId);
+            var gardenModel = await _context.Gardens
+             .Include(g => g.User)
+            .FirstOrDefaultAsync(_garden => _garden.GardenId == gardenId);
+
             if (gardenModel == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    message = "Jardín no encontrado para actualizar."
+                });
             }
-    
+
             gardenModel.UserId = gardenDto.UserId;
             gardenModel.Name = gardenDto.Name;
             gardenModel.Description = gardenDto.Description;
@@ -68,7 +93,15 @@ namespace Api.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(gardenModel.ToDto());
+
+
+            return Ok(new
+            {
+                message = "Jardín actualizado correctamente.",
+                data = gardenModel.ToDto()
+            });
+
+
         }
 
         //Endpoint delete an Gardens
@@ -77,15 +110,102 @@ namespace Api.Controllers
         public async Task<IActionResult> DeleteGarden([FromRoute] int gardenId)
         {
             var gardenModel = await _context.Gardens.FirstOrDefaultAsync(_garden => _garden.GardenId == gardenId);
+
+
             if (gardenModel == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    message = "Jardín no encontrado para eliminar."
+                });
             }
+
             _context.Gardens.Remove(gardenModel);
 
             await _context.SaveChangesAsync();
 
             return NoContent();
+
+
         }
+
+
+        [HttpGet("garden/{gardenId}/user")]
+        public async Task<IActionResult> GetUserByGardenId([FromRoute] int gardenId)
+        {
+            var garden = await _context.Gardens
+                .Include(g => g.User)
+                .FirstOrDefaultAsync(g => g.GardenId == gardenId);
+
+            if (garden == null)
+            {
+                return NotFound(new { message = "Jardín no encontrado." });
+            }
+
+            if (garden.User == null)
+            {
+                return NotFound(new { message = "Este jardín no tiene un usuario asignado." });
+            }
+
+            return Ok(new
+            {
+                message = "Jardín y usuario encontrados correctamente.",
+                garden = new
+                {
+                    garden.GardenId,
+                    garden.Name,
+                    garden.Description,
+                    garden.CreatedAt
+                },
+                user = new
+                {
+                    garden.User.UserId,
+                    garden.User.Name,
+                    garden.User.FirstName,
+                    garden.User.Email
+                }
+            });
+        }
+
+        //enpoint de los usuarios relacionados con un jardin
+        [HttpGet("garden/{userId}")]
+        public IActionResult GetGardensByUser(int userId)
+        {
+
+            var gardens = _context.Gardens
+                .Where(g => g.UserId == userId)
+                .Include(g => g.User)
+                .ToList();
+
+            if (gardens.Any())
+            {
+
+                var gardenDtos = gardens.Select(g => g.ToDto()).ToList();
+
+                return Ok(new
+                {
+                    message = "Jardines encontrados",
+                    data = gardenDtos
+                });
+            }
+            else
+            {
+                return NotFound(new
+                {
+                    message = "No se encontraron jardines para el usuario especificado."
+                });
+            }
+        }
+
+
+
     }
+
+
+
+
+
 }
+
+
+
