@@ -5,15 +5,55 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-
-
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de servicios
+builder.Services.AddScoped<Utils>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { 
+        Title = "API Huertos Urbanos", 
+        Version = "v1",
+        Description = "API para el sistema de huertos urbanos",
+        Contact = new OpenApiContact
+        {
+            Name = "Equipo de desarrollo",
+            Email = "@huertosurbanos.com"
+        }
+    });
+    
+    // Configuración para JWT en Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new List<string>()
+        }
+    });
+});
 
 // Configuración del DbContext
 builder.Services.AddDbContext<UrbanGardeningContext>(options =>
@@ -21,6 +61,7 @@ builder.Services.AddDbContext<UrbanGardeningContext>(options =>
 
 builder.Services.AddSingleton<Utils>();
 
+// Configuración de autenticación JWT
 builder.Services.AddAuthentication(config => { 
     config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,22 +76,24 @@ builder.Services.AddAuthentication(config => {
         ValidateAudience = false,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey
-        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!))
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!))
     };
 });
 
+// Configuración de CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("NewPolicy", app =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        app.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
+// Configuración de logging
 builder.Logging.AddConsole().SetMinimumLevel(LogLevel.Debug);
-
-
 
 var app = builder.Build();
 
@@ -58,14 +101,21 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
+    app.UseSwaggerUI(c => 
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Huertos Urbanos v1");
+        c.ConfigObject.AdditionalItems["persistAuthorization"] = true;
+        c.RoutePrefix = "swagger";
     });
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
