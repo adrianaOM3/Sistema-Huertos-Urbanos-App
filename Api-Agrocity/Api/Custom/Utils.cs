@@ -4,6 +4,10 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Api.Models;
+using Microsoft.Extensions.Configuration;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace Api.Custom
 {
@@ -59,6 +63,30 @@ namespace Api.Custom
 
             return new JwtSecurityTokenHandler().WriteToken(jwtConfig);
         }
+
+        public async Task SendEmailAsync(string toEmail, string subject, string body)
+            {
+                var fromEmail = _configuration["EmailSettings:From"];
+                var password = _configuration["EmailSettings:Password"];
+
+                var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(fromEmail, password),
+                    EnableSsl = true
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(fromEmail),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+                mailMessage.To.Add(toEmail);
+
+                await smtpClient.SendMailAsync(mailMessage);
+            }
 
     }
 }
