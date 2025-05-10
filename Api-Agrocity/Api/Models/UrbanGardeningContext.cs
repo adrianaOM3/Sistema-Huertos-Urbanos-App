@@ -36,7 +36,10 @@ public partial class UrbanGardeningContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=PC-JFRB\\SQLEXPRESS;Database=UrbanGardening;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;");
+Add-garden-image
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=UrbanGardening;Trusted_Connection=True;TrustServerCertificate=True;");
+main
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -56,6 +59,10 @@ public partial class UrbanGardeningContext : DbContext
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasKey(e => e.CommentId).HasName("PK__Comments__CDDE919D049988A8");
+
+            entity.HasIndex(e => e.PublicationId, "IX_Comments_publicationId");
+
+            entity.HasIndex(e => e.UserId, "IX_Comments_userId");
 
             entity.Property(e => e.CommentId).HasColumnName("commentId");
             entity.Property(e => e.CreatedAt)
@@ -81,6 +88,8 @@ public partial class UrbanGardeningContext : DbContext
         {
             entity.HasKey(e => e.GardenId).HasName("PK__Gardens__C5BCE574A5896009");
 
+            entity.HasIndex(e => e.UserId, "IX_Gardens_userId");
+
             entity.Property(e => e.GardenId).HasColumnName("gardenId");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -104,6 +113,8 @@ public partial class UrbanGardeningContext : DbContext
         {
             entity.HasKey(e => e.NotificationId).HasName("PK__Notifica__4BA5CEA97C271245");
 
+            entity.HasIndex(e => e.UserId, "IX_Notifications_userId");
+
             entity.Property(e => e.NotificationId).HasColumnName("notificationId");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -124,6 +135,7 @@ public partial class UrbanGardeningContext : DbContext
             entity.HasKey(e => e.PestId).HasName("PK__Pests__7F10C1DDE81FD7F1");
 
             entity.Property(e => e.PestId)
+                .ValueGeneratedNever()
                 .HasColumnName("pestId");
             entity.Property(e => e.CommonName)
                 .HasMaxLength(255)
@@ -239,6 +251,7 @@ public partial class UrbanGardeningContext : DbContext
                     {
                         j.HasKey("PlantId", "PestId").HasName("PK__PlantPes__40F43EAD78645CA7");
                         j.ToTable("PlantPests");
+                        j.HasIndex(new[] { "PestId" }, "IX_PlantPests_pestId");
                         j.IndexerProperty<int>("PlantId").HasColumnName("plantId");
                         j.IndexerProperty<int>("PestId").HasColumnName("pestId");
                     });
@@ -247,6 +260,8 @@ public partial class UrbanGardeningContext : DbContext
         modelBuilder.Entity<Publication>(entity =>
         {
             entity.HasKey(e => e.PublicationId).HasName("PK__Publicat__883D5CDF2EDC98F4");
+
+            entity.HasIndex(e => e.UserId, "IX_Publications_userId");
 
             entity.Property(e => e.PublicationId).HasColumnName("publicationId");
             entity.Property(e => e.CommentId).HasColumnName("commentId");
@@ -271,6 +286,10 @@ public partial class UrbanGardeningContext : DbContext
         modelBuilder.Entity<Reminder>(entity =>
         {
             entity.HasKey(e => e.ReminderId).HasName("PK__Reminder__09DAAAE369C1E1AB");
+
+            entity.HasIndex(e => e.PlantId, "IX_Reminders_plantId");
+
+            entity.HasIndex(e => e.UserId, "IX_Reminders_userId");
 
             entity.Property(e => e.ReminderId).HasColumnName("reminderId");
             entity.Property(e => e.PlantId).HasColumnName("plantId");

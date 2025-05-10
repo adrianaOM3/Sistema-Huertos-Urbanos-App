@@ -14,6 +14,7 @@ namespace Api.Controllers
     public class GardenController : ControllerBase
     {
         private readonly UrbanGardeningContext _context;
+        private readonly string _imagePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedImages");
 
         public GardenController(UrbanGardeningContext context)
         {
@@ -25,7 +26,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllGarden()
         {
             var gardens = await _context.Gardens
-            .Include(g => g.User) 
+            .Include(g => g.User)
             .ToListAsync();
             var gardensDto = gardens.Select(gardens => gardens.ToDto());
             return Ok(gardensDto);
@@ -60,49 +61,104 @@ namespace Api.Controllers
         }
 
         //Endpoint new create Gardens
+
         [HttpPost]
+        public async Task<IActionResult> Create([FromForm] CreateGardenRequestDto gardenDto)
+        {
+            try
+            {
+                if (gardenDto.File == null || gardenDto.File.Length == 0)
+                    return BadRequest("No file uploaded.");
+
+                var gardenModel = gardenDto.ToGardenFromCreateDto();
+
+
+                await _context.Gardens.AddAsync(gardenModel);
+                await _context.SaveChangesAsync();
+
+                var fileName = gardenModel.GardenId.ToString() + Path.GetExtension(gardenDto.File.FileName);
+                var filePath = Path.Combine(_imagePath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await gardenDto.File.CopyToAsync(stream);
+                }
+
+                gardenModel.ImageUrl = fileName;
+
+                _context.Gardens.Update(gardenModel);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(getByIdGardens), new { gardenId = gardenModel.GardenId }, gardenModel);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno: {ex.Message}");
+            }
+        }
+
+        /*[HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateGardenRequestDto createGardenRequestDto)
         {
             var gardenModel = createGardenRequestDto.ToGardenFromCreateDto();
             await _context.Gardens.AddAsync(gardenModel);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(getByIdGardens), new { gardenId = gardenModel.GardenId }, gardenModel.ToDto());
-        }
+        }*/
 
         //Endpoint update Gardens
-        [HttpPut]
-        [Route("{gardenId}")]
-        public async Task<IActionResult> UpdateGarden([FromRoute] int gardenId, [FromBody] UpdateGardenRequestDto gardenDto)
-        {
-            var gardenModel = await _context.Gardens
-             .Include(g => g.User)
-            .FirstOrDefaultAsync(_garden => _garden.GardenId == gardenId);
 
-            if (gardenModel == null)
+        [HttpPut("{gardenId}")]
+        public async Task<IActionResult> Update(int gardenId, [FromForm] UpdateGardenRequestDto gardenDto)
+        {
+            try
             {
-                return NotFound(new
+                var existingGarden = await _context.Gardens.FindAsync(gardenId);
+                if (existingGarden == null)
+                    return NotFound(new { message = $"No se encontró un jardín con ID {gardenId}." });
+
+                
+                var userExists = await _context.Users.AnyAsync(u => u.UserId == gardenDto.UserId);
+                if (!userExists)
+                    return BadRequest(new { message = $"No se encontró un usuario con ID {gardenDto.UserId}." });
+
+                
+                existingGarden.UserId = gardenDto.UserId;
+                existingGarden.Name = gardenDto.Name;
+                existingGarden.Description = gardenDto.Description;
+                existingGarden.CreatedAt = gardenDto.CreatedAt;
+                
+
+              
+                if (gardenDto.File != null && gardenDto.File.Length > 0)
                 {
-                    message = "Jardín no encontrado para actualizar."
+                    var fileName = existingGarden.GardenId.ToString() + Path.GetExtension(gardenDto.File.FileName);
+                    var filePath = Path.Combine(_imagePath, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await gardenDto.File.CopyToAsync(stream);
+                    }
+
+                    existingGarden.ImageUrl = fileName;
+                }
+
+                _context.Gardens.Update(existingGarden);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    message = "Jardín actualizado correctamente.",
+                    garden = existingGarden
                 });
             }
-
-            gardenModel.UserId = gardenDto.UserId;
-            gardenModel.Name = gardenDto.Name;
-            gardenModel.Description = gardenDto.Description;
-            gardenModel.CreatedAt = gardenDto.CreatedAt;
-
-            await _context.SaveChangesAsync();
-
-
-
-            return Ok(new
+            catch (Exception ex)
             {
-                message = "Jardín actualizado correctamente.",
-                data = gardenModel.ToDto()
-            });
-
-
+                return StatusCode(500, new { message = $"Error interno al actualizar el jardín: {ex.Message}" });
+            }
         }
+
+       
 
         //Endpoint delete an Gardens
         [HttpDelete]
@@ -128,7 +184,6 @@ namespace Api.Controllers
 
 
         }
-
 
         [HttpGet("garden/{gardenId}/user")]
         public async Task<IActionResult> GetUserByGardenId([FromRoute] int gardenId)

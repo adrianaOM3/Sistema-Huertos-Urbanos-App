@@ -15,5 +15,7 @@ public partial class Garden
 
     public DateTime? CreatedAt { get; set; }
 
+    public string? ImageUrl { get; set; }
+
     public virtual User? User { get; set; }
 }
