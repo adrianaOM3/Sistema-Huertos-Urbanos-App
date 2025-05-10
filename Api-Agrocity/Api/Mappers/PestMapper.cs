@@ -1,4 +1,4 @@
-using Api.Dto.Pest;
+using Api.Dtos.Pest;
 using Api.Models;
 
 namespace Api.Mappers
@@ -19,6 +19,20 @@ namespace Api.Mappers
             };
         }
 
+
+        // This method maps an ExternalPestDto object to a PestDto object.
+        public static PestDto ToPestDto(this ExternalPestDto external)
+        {
+            return new PestDto
+            {
+                CommonName = external.common_name,
+                ScientificName = external.scientific_name,
+                Description = external.description?.FirstOrDefault()?.description,
+                Solution = external.solution?.FirstOrDefault()?.description,
+                Host = external.host != null ? string.Join(", ", external.host) : null,
+                ImageUrl = external.images?.FirstOrDefault()?.regular_url
+            };
+        }
         public static Pest ToPestFromCreateDto(this CreatePestRequestDto pestDto)
         {
             return new Pest
