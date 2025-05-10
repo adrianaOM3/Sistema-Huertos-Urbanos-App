@@ -14,13 +14,15 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de servicios
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<Utils>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { 
-        Title = "API Huertos Urbanos", 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API Huertos Urbanos",
         Version = "v1",
         Description = "API para el sistema de huertos urbanos",
         Contact = new OpenApiContact
@@ -29,7 +31,7 @@ builder.Services.AddSwaggerGen(c =>
             Email = "@huertosurbanos.com"
         }
     });
-    
+
     // Configuración para JWT en Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -39,7 +41,7 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
         {
@@ -66,7 +68,8 @@ builder.Services.AddDbContext<UrbanGardeningContext>(options =>
 builder.Services.AddSingleton<Utils>();
 
 // Configuración de autenticación JWT
-builder.Services.AddAuthentication(config => { 
+builder.Services.AddAuthentication(config =>
+{
     config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(config =>
@@ -105,7 +108,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => 
+    app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Huertos Urbanos v1");
         c.ConfigObject.AdditionalItems["persistAuthorization"] = true;
