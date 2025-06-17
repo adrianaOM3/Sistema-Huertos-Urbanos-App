@@ -136,26 +136,34 @@ namespace Api.Controllers
         public async Task<IActionResult> GetExternalPests()
         {
             var httpClient = new HttpClient();
-
-            var response = await httpClient.GetAsync("https://perenual.com/api/pest-disease-list?key=sk-NoVy681ef04e0e60c10347");
-
-
-            if (!response.IsSuccessStatusCode)
-                return StatusCode((int)response.StatusCode, "Failed to fetch pests from external API");
-
-            var json = await response.Content.ReadAsStringAsync();
-            //Console.WriteLine(json);
-
+            var allPests = new List<ExternalPestDto>();
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var wrapper = JsonSerializer.Deserialize<ExternalPestWrapper>(json, options);
 
-            if (wrapper?.data == null)
-                return NotFound("No pests found in external API");
+            for (int page = 1; page <= 3; page++)
+            {
+                var response = await httpClient.GetAsync($"https://perenual.com/api/pest-disease-list?key=sk-NoVy681ef04e0e60c10347&page={page}");
 
-            var pestDtos = wrapper.data.Select(p => p.ToPestDto()).ToList();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return StatusCode((int)response.StatusCode, $"Failed to fetch pests on page {page}");
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var wrapper = JsonSerializer.Deserialize<ExternalPestWrapper>(json, options);
+
+                if (wrapper?.data == null || !wrapper.data.Any())
+                {
+                    break; // Ya no hay más datos
+                }
+
+                allPests.AddRange(wrapper.data);
+            }
+
+            var pestDtos = allPests.Select(p => p.ToPestDto()).ToList();
 
             return Ok(pestDtos);
         }
+
 
 
 
