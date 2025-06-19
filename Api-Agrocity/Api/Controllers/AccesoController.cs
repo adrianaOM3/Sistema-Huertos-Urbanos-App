@@ -4,8 +4,6 @@ using Api.Custom;
 using Api.Models;
 using Api.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
-using System.Net;
-using System.Net.Mail;
 
 
 namespace Api.Controllers
@@ -63,47 +61,5 @@ namespace Api.Controllers
             var token = _utils.GenerarJWT(userFind);
             return Ok(new { isSuccess = true, token });
         }
-
-
-        [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO model)
-        {
-            var user = await _dbUrbanGardeningContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-            if (user == null)
-                return NotFound(new { message = "User not found" });
-
-            // Generar token
-            var token = Guid.NewGuid().ToString();
-            user.PasswordResetToken = token;
-            user.ResetTokenExpires = DateTime.UtcNow.AddHours(1);
-
-            await _dbUrbanGardeningContext.SaveChangesAsync();
-
-            var resetLink = $"{Request.Scheme}://{Request.Host}/reset-password?token={token}";
-            var emailBody = $"<p>Click <a href=\"{resetLink}\">here</a> to reset your password. The link expires in 1 hour.</p>";
-
-            await _utils.SendEmailAsync(user.Email, "Password Reset", emailBody);
-
-            return Ok(new { message = "Email sent successfully" });
-        }
-
-        [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
-        {
-            var user = await _dbUrbanGardeningContext.Users
-                .FirstOrDefaultAsync(u => u.PasswordResetToken == model.Token && u.ResetTokenExpires > DateTime.UtcNow);
-
-            if (user == null)
-                return BadRequest(new { message = "Invalid or expired token" });
-
-            user.Password = _utils.EncriptarSHA256(model.NewPassword);
-            user.PasswordResetToken = null;
-            user.ResetTokenExpires = null;
-
-            await _dbUrbanGardeningContext.SaveChangesAsync();
-
-            return Ok(new { message = "Password reset successful" });
-        }
-
     }
 }

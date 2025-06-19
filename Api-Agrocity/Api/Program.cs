@@ -9,11 +9,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.FileProviders;
 
 
-using Microsoft.OpenApi.Models;
 
+using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de servicios
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<Utils>();
 builder.Services.AddControllers();
@@ -83,24 +86,24 @@ builder.Services.AddAuthentication(config =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!))
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!))
     };
 });
 
-// Configuración de CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("NewPolicy", app =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        app.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
 
-// Configuración de logging
+
+
 builder.Logging.AddConsole().SetMinimumLevel(LogLevel.Debug);
+
+
 
 var app = builder.Build();
 
@@ -116,13 +119,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors("NewPolicy");
 app.UseHttpsRedirection();
-
-app.UseCors("AllowAll");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 

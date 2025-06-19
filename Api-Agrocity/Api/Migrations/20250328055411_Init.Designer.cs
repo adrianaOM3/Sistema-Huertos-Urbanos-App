@@ -4,6 +4,7 @@ using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(UrbanGardeningContext))]
-    partial class UrbanGardeningContextModelSnapshot : ModelSnapshot
+    [Migration("20250328055411_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -75,9 +78,9 @@ namespace Api.Migrations
                     b.HasKey("CommentId")
                         .HasName("PK__Comments__CDDE919D049988A8");
 
-                    b.HasIndex(new[] { "PublicationId" }, "IX_Comments_publicationId");
+                    b.HasIndex("PublicationId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Comments_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -101,9 +104,6 @@ namespace Api.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .IsUnicode(false)
@@ -117,7 +117,7 @@ namespace Api.Migrations
                     b.HasKey("GardenId")
                         .HasName("PK__Gardens__C5BCE574A5896009");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Gardens_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Gardens");
                 });
@@ -148,7 +148,7 @@ namespace Api.Migrations
                     b.HasKey("NotificationId")
                         .HasName("PK__Notifica__4BA5CEA97C271245");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Notifications_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });
@@ -156,11 +156,8 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Pest", b =>
                 {
                     b.Property<int>("PestId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("pestId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PestId"));
 
                     b.Property<string>("CommonName")
                         .HasMaxLength(255)
@@ -373,7 +370,7 @@ namespace Api.Migrations
                     b.HasKey("PublicationId")
                         .HasName("PK__Publicat__883D5CDF2EDC98F4");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Publications_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Publications");
                 });
@@ -408,9 +405,9 @@ namespace Api.Migrations
                     b.HasKey("ReminderId")
                         .HasName("PK__Reminder__09DAAAE369C1E1AB");
 
-                    b.HasIndex(new[] { "PlantId" }, "IX_Reminders_plantId");
+                    b.HasIndex("PlantId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Reminders_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reminders");
                 });
@@ -494,7 +491,7 @@ namespace Api.Migrations
                     b.HasKey("PlantId", "PestId")
                         .HasName("PK__PlantPes__40F43EAD78645CA7");
 
-                    b.HasIndex(new[] { "PestId" }, "IX_PlantPests_pestId");
+                    b.HasIndex("PestId");
 
                     b.ToTable("PlantPests", (string)null);
                 });

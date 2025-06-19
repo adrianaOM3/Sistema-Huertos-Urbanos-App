@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(UrbanGardeningContext))]
-    [Migration("20250509070427_AddPasswordResetToken")]
-    partial class AddPasswordResetToken
+    [Migration("20250328231723_Prueba")]
+    partial class Prueba
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,8 +34,8 @@ namespace Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalendarId"));
 
-                    b.Property<DateTime?>("CalendarDate")
-                        .HasColumnType("datetime2")
+                    b.Property<DateOnly?>("CalendarDate")
+                        .HasColumnType("date")
                         .HasColumnName("calendarDate");
 
                     b.Property<string>("Description")
@@ -156,11 +156,8 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Pest", b =>
                 {
                     b.Property<int>("PestId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("pestId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PestId"));
 
                     b.Property<string>("CommonName")
                         .HasMaxLength(255)
@@ -459,12 +456,6 @@ namespace Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("password");
-
-                    b.Property<string>("PasswordResetToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ResetTokenExpires")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Surname")
                         .HasMaxLength(500)

@@ -17,7 +17,7 @@ namespace Api.Migrations
                 {
                     calendarId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    calendarDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    calendarDate = table.Column<DateOnly>(type: "date", nullable: true),
                     description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

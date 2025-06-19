@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(UrbanGardeningContext))]
-    [Migration("20250509062936_InitialCreate")]
+    [Migration("20250329091939_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,8 +34,8 @@ namespace Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalendarId"));
 
-                    b.Property<DateTime?>("CalendarDate")
-                        .HasColumnType("datetime2")
+                    b.Property<DateOnly?>("CalendarDate")
+                        .HasColumnType("date")
                         .HasColumnName("calendarDate");
 
                     b.Property<string>("Description")
