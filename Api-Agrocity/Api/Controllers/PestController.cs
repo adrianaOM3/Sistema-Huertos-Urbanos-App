@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Api.Dto.Pest;
+using Api.Dtos.Pest;
 using Api.Mappers;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using System.Text.Json;
+
 
 namespace Api.Controllers
 {
@@ -15,10 +18,13 @@ namespace Api.Controllers
     public class PestController : ControllerBase
     {
         private readonly UrbanGardeningContext _context;
+        private readonly HttpClient _httpClient;
 
         public PestController(UrbanGardeningContext context)
         {
             _context = context;
+            _httpClient = new HttpClient();
+
         }
 
         // GET: api/pest
@@ -103,6 +109,56 @@ namespace Api.Controllers
             return Ok(pest.ToPestDto());
         }
 
+        // GET: api/pest/byplant/5
+        [HttpGet("byplant/{plantId}")]
+        public async Task<IActionResult> GetByPlantId([FromRoute] int plantId)
+        {
+            if (plantId <= 0)
+                return BadRequest("No se encontraron plantas con ese identificador.");
+
+            var plant = await _context.Plants
+                .Include(p => p.Pests)
+                .FirstOrDefaultAsync(p => p.PlantId == plantId);
+
+            if (plant == null)
+                return NotFound($"No plant found with ID {plantId}.");
+
+            if (plant.Pests == null || !plant.Pests.Any())
+                return Ok(new List<PestDto>()); // Empty list, no pests related
+
+            var pestDtos = plant.Pests.Select(p => p.ToPestDto());
+
+            return Ok(pestDtos);
+        }
+
+        // GET: api/pest/search
+        [HttpGet("external")]
+        public async Task<IActionResult> GetExternalPests()
+        {
+            var httpClient = new HttpClient();
+
+            var response = await httpClient.GetAsync("https://perenual.com/api/pest-disease-list?key=sk-NoVy681ef04e0e60c10347");
+
+
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, "Failed to fetch pests from external API");
+
+            var json = await response.Content.ReadAsStringAsync();
+            //Console.WriteLine(json);
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var wrapper = JsonSerializer.Deserialize<ExternalPestWrapper>(json, options);
+
+            if (wrapper?.data == null)
+                return NotFound("No pests found in external API");
+
+            var pestDtos = wrapper.data.Select(p => p.ToPestDto()).ToList();
+
+            return Ok(pestDtos);
+        }
+
+
+
         // DELETE: api/pest/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
@@ -121,4 +177,6 @@ namespace Api.Controllers
             return NoContent();
         }
     }
+
+
 }

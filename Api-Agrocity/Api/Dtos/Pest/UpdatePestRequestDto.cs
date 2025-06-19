@@ -1,9 +1,8 @@
-namespace Api.Dto.Pest
-{
+namespace Api.Dtos.Pest
 
-    public class PestDto
+{
+    public class UpdatePestRequestDto
     {
-        public int PestId { get; set; }
         public string? CommonName { get; set; }
         public string? ScientificName { get; set; }
         public string? Description { get; set; }
