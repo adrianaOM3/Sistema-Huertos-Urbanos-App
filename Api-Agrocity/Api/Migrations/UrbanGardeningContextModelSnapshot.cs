@@ -102,7 +102,8 @@ namespace Api.Migrations
                         .HasColumnName("description");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text")
+                        .HasColumnName("ImageUrl");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(UrbanGardeningContext))]
-    [Migration("20250509062936_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250619182900_newLastMigration")]
+    partial class newLastMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,9 +78,9 @@ namespace Api.Migrations
                     b.HasKey("CommentId")
                         .HasName("PK__Comments__CDDE919D049988A8");
 
-                    b.HasIndex("PublicationId");
+                    b.HasIndex(new[] { "PublicationId" }, "IX_Comments_publicationId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Comments_userId");
 
                     b.ToTable("Comments");
                 });
@@ -104,6 +104,10 @@ namespace Api.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("ImageUrl");
+
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .IsUnicode(false)
@@ -117,7 +121,7 @@ namespace Api.Migrations
                     b.HasKey("GardenId")
                         .HasName("PK__Gardens__C5BCE574A5896009");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Gardens_userId");
 
                     b.ToTable("Gardens");
                 });
@@ -148,7 +152,7 @@ namespace Api.Migrations
                     b.HasKey("NotificationId")
                         .HasName("PK__Notifica__4BA5CEA97C271245");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Notifications_userId");
 
                     b.ToTable("Notifications");
                 });
@@ -373,7 +377,7 @@ namespace Api.Migrations
                     b.HasKey("PublicationId")
                         .HasName("PK__Publicat__883D5CDF2EDC98F4");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Publications_userId");
 
                     b.ToTable("Publications");
                 });
@@ -408,9 +412,9 @@ namespace Api.Migrations
                     b.HasKey("ReminderId")
                         .HasName("PK__Reminder__09DAAAE369C1E1AB");
 
-                    b.HasIndex("PlantId");
+                    b.HasIndex(new[] { "PlantId" }, "IX_Reminders_plantId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Reminders_userId");
 
                     b.ToTable("Reminders");
                 });
@@ -460,6 +464,12 @@ namespace Api.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("password");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Surname")
                         .HasMaxLength(500)
                         .IsUnicode(false)
@@ -494,7 +504,7 @@ namespace Api.Migrations
                     b.HasKey("PlantId", "PestId")
                         .HasName("PK__PlantPes__40F43EAD78645CA7");
 
-                    b.HasIndex("PestId");
+                    b.HasIndex(new[] { "PestId" }, "IX_PlantPests_pestId");
 
                     b.ToTable("PlantPests", (string)null);
                 });

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class newLastMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -100,7 +100,9 @@ namespace Api.Migrations
                     telephone = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true),
                     email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     password = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
-                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())"),
+                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -140,7 +142,8 @@ namespace Api.Migrations
                     userId = table.Column<int>(type: "int", nullable: true),
                     name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     description = table.Column<string>(type: "text", nullable: true),
-                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
+                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())"),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

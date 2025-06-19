@@ -101,6 +101,9 @@ public partial class UrbanGardeningContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("name");
             entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.ImageUrl)
+                .HasColumnType("text")
+                .HasColumnName("ImageUrl");
 
             entity.HasOne(d => d.User).WithMany(p => p.Gardens)
                 .HasForeignKey(d => d.UserId)
