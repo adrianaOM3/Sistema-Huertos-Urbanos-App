@@ -117,19 +117,19 @@ namespace Api.Controllers
                 if (existingGarden == null)
                     return NotFound(new { message = $"No se encontró un jardín con ID {gardenId}." });
 
-                
+
                 var userExists = await _context.Users.AnyAsync(u => u.UserId == gardenDto.UserId);
                 if (!userExists)
                     return BadRequest(new { message = $"No se encontró un usuario con ID {gardenDto.UserId}." });
 
-                
+
                 existingGarden.UserId = gardenDto.UserId;
                 existingGarden.Name = gardenDto.Name;
                 existingGarden.Description = gardenDto.Description;
                 existingGarden.CreatedAt = gardenDto.CreatedAt;
-                
 
-              
+
+
                 if (gardenDto.File != null && gardenDto.File.Length > 0)
                 {
                     var fileName = existingGarden.GardenId.ToString() + Path.GetExtension(gardenDto.File.FileName);
@@ -158,7 +158,7 @@ namespace Api.Controllers
             }
         }
 
-       
+
 
         //Endpoint delete an Gardens
         [HttpDelete]
@@ -223,10 +223,37 @@ namespace Api.Controllers
         }
 
         //enpoint de los usuarios relacionados con un jardin
+        /* [HttpGet("garden/{userId}")]
+         public IActionResult GetGardensByUser(int userId)
+         {
+
+             var gardens = _context.Gardens
+                 .Where(g => g.UserId == userId)
+                 .Include(g => g.User)
+                 .ToList();
+
+             if (gardens.Any())
+             {
+
+                 var gardenDtos = gardens.Select(g => g.ToDto()).ToList();
+
+                 return Ok(new
+                 {
+                     message = "Jardines encontrados",
+                     data = gardenDtos
+                 });
+             }
+             else
+             {
+                 return NotFound(new
+                 {
+                     message = "No se encontraron jardines para el usuario especificado."
+                 });
+             }
+         }*/
         [HttpGet("garden/{userId}")]
         public IActionResult GetGardensByUser(int userId)
         {
-
             var gardens = _context.Gardens
                 .Where(g => g.UserId == userId)
                 .Include(g => g.User)
@@ -234,23 +261,15 @@ namespace Api.Controllers
 
             if (gardens.Any())
             {
-
                 var gardenDtos = gardens.Select(g => g.ToDto()).ToList();
-
-                return Ok(new
-                {
-                    message = "Jardines encontrados",
-                    data = gardenDtos
-                });
+                return Ok(gardenDtos);
             }
             else
             {
-                return NotFound(new
-                {
-                    message = "No se encontraron jardines para el usuario especificado."
-                });
+                return NotFound("No se encontraron jardines para el usuario especificado.");
             }
         }
+
 
 
 

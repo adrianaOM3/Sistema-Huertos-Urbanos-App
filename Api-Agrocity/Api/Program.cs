@@ -50,6 +50,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+
 builder.Logging.AddConsole().SetMinimumLevel(LogLevel.Debug);
 
 
@@ -65,6 +67,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors("NewPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
