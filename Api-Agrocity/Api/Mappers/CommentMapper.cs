@@ -11,7 +11,7 @@ namespace Api.Mappers
             {
                 
                 UserId = comment.UserId,
-                PublicationId = comment.PublicationId,
+                GardenId = comment.GardenId,
                 Description = comment.Description,
                 CreatedAt = comment.CreatedAt
             };
@@ -23,7 +23,7 @@ namespace Api.Mappers
             {
                
                 UserId = commentDto.UserId,
-                PublicationId = commentDto.PublicationId,
+                GardenId = commentDto.GardenId,
                 Description = commentDto.Description,
                 CreatedAt = commentDto.CreatedAt
             };
@@ -34,7 +34,7 @@ namespace Api.Mappers
             {
             
                 UserId = commentDto.UserId,
-                PublicationId = commentDto.PublicationId,
+                GardenId = commentDto.GardenId,
                 Description = commentDto.Description,
                 CreatedAt = commentDto.CreatedAt
             };

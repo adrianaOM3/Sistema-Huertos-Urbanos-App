@@ -7,7 +7,7 @@ namespace Api.Dtos.Comment
     {
         public int? UserId { get; set; }
 
-        public int? PublicationId { get; set; }
+        public int? GardenId { get; set; }
 
         public string? Description { get; set; }
 

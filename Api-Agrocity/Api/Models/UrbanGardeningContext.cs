@@ -59,7 +59,7 @@ public partial class UrbanGardeningContext : DbContext
         {
             entity.HasKey(e => e.CommentId).HasName("PK__Comments__CDDE919D049988A8");
 
-            entity.HasIndex(e => e.PublicationId, "IX_Comments_publicationId");
+           // entity.HasIndex(e => e.PublicationId, "IX_Comments_publicationId");
 
             entity.HasIndex(e => e.UserId, "IX_Comments_userId");
 
@@ -70,11 +70,11 @@ public partial class UrbanGardeningContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
-            entity.Property(e => e.PublicationId).HasColumnName("publicationId");
+            entity.Property(e => e.GardenId).HasColumnName("publicationId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
-            entity.HasOne(d => d.Publication).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.PublicationId)
+            entity.HasOne(d => d.Garden).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.GardenId)
                 .HasConstraintName("FK__Comments__public__6A30C649");
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)

@@ -64,7 +64,7 @@ namespace Api.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<int?>("PublicationId")
+                    b.Property<int?>("GardenId")
                         .HasColumnType("int")
                         .HasColumnName("publicationId");
 
@@ -75,7 +75,7 @@ namespace Api.Migrations
                     b.HasKey("CommentId")
                         .HasName("PK__Comments__CDDE919D049988A8");
 
-                    b.HasIndex(new[] { "PublicationId" }, "IX_Comments_publicationId");
+                    b.HasIndex("GardenId");
 
                     b.HasIndex(new[] { "UserId" }, "IX_Comments_userId");
 
@@ -501,9 +501,9 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.Comment", b =>
                 {
-                    b.HasOne("Api.Models.Publication", "Publication")
+                    b.HasOne("Api.Models.Garden", "Garden")
                         .WithMany("Comments")
-                        .HasForeignKey("PublicationId")
+                        .HasForeignKey("GardenId")
                         .HasConstraintName("FK__Comments__public__6A30C649");
 
                     b.HasOne("Api.Models.User", "User")
@@ -512,7 +512,7 @@ namespace Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK__Comments__userId__693CA210");
 
-                    b.Navigation("Publication");
+                    b.Navigation("Garden");
 
                     b.Navigation("User");
                 });
@@ -586,14 +586,14 @@ namespace Api.Migrations
                         .HasConstraintName("FK__PlantPest__plant__5812160E");
                 });
 
+            modelBuilder.Entity("Api.Models.Garden", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("Api.Models.Plant", b =>
                 {
                     b.Navigation("Reminders");
-                });
-
-            modelBuilder.Entity("Api.Models.Publication", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Api.Models.User", b =>
