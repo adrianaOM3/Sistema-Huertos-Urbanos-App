@@ -12,22 +12,22 @@ namespace Api.Mappers
             {
                 PlantId = plant.PlantId,
                 PlantName = plant.PlantName,
-                ScientificName = plant.ScientificName,
-                Description = plant.Description,
-                GrowthCycle = plant.GrowthCycle,
-                WateringFrequency = plant.WateringFrequency,
-                HardinessZone = plant.HardinessZone,
-                HardinessZoneDescription = plant.HardinessZoneDescription,
-                FlowerDetails = plant.FlowerDetails,
-                SunExposure = plant.SunExposure,
-                FruitDetails = plant.FruitDetails,
-                IsEdible = plant.IsEdible ?? false,
-                HasLeaves = plant.HasLeaves?? false,
-                LeafColor = plant.LeafColor,
-                GrowthRate = plant.GrowthRate,
-                MaintenanceLevel = plant.MaintenanceLevel,
-                IsSaltTolerant = plant.IsSaltTolerant?? false,
-                CareLevel = plant.CareLevel
+                //ScientificName = plant.ScientificName,
+                //Description = plant.Description,
+                //GrowthCycle = plant.GrowthCycle,
+                //WateringFrequency = plant.WateringFrequency,
+                //HardinessZone = plant.HardinessZone,
+                //HardinessZoneDescription = plant.HardinessZoneDescription,
+                //FlowerDetails = plant.FlowerDetails,
+                //SunExposure = plant.SunExposure,
+                //FruitDetails = plant.FruitDetails,
+                //IsEdible = plant.IsEdible ?? false,
+                //HasLeaves = plant.HasLeaves?? false,
+                //LeafColor = plant.LeafColor,
+                //GrowthRate = plant.GrowthRate,
+                //MaintenanceLevel = plant.MaintenanceLevel,
+                //IsSaltTolerant = plant.IsSaltTolerant?? false,
+                //CareLevel = plant.CareLevel
             };
         }
 
@@ -36,7 +36,7 @@ namespace Api.Mappers
         {
             return new Plant
             {
-                PlantName = createPlantRequest.PlantName,
+                /*PlantName = createPlantRequest.PlantName,
                 ScientificName = createPlantRequest.ScientificName,
                 Description = createPlantRequest.Description,
                 GrowthCycle = createPlantRequest.GrowthCycle,
@@ -53,6 +53,7 @@ namespace Api.Mappers
                 MaintenanceLevel = createPlantRequest.MaintenanceLevel,
                 IsSaltTolerant = createPlantRequest.IsSaltTolerant,
                 CareLevel = createPlantRequest.CareLevel
+                */
             };
         }
 
@@ -61,7 +62,7 @@ namespace Api.Mappers
         {
             return new Plant
             {
-                PlantName = updatePlantRequest.PlantName,
+                /*PlantName = updatePlantRequest.PlantName,
                 ScientificName = updatePlantRequest.ScientificName,
                 Description = updatePlantRequest.Description,
                 GrowthCycle = updatePlantRequest.GrowthCycle,
@@ -78,6 +79,7 @@ namespace Api.Mappers
                 MaintenanceLevel = updatePlantRequest.MaintenanceLevel,
                 IsSaltTolerant = updatePlantRequest.IsSaltTolerant,
                 CareLevel = updatePlantRequest.CareLevel
+                */
             };
         }
     }

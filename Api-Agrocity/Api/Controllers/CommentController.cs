@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Api.Controllers
 {
     [Route("api/comments")]
-    
+
     public class CommentController : ControllerBase
     {
         private readonly UrbanGardeningContext _context;
@@ -64,7 +64,7 @@ namespace Api.Controllers
             var updatedComment = CommentMapper.ToCommentFromUpdateDto(commentDto);
 
             commentModel.Description = updatedComment.Description;
-            commentModel.PublicationId = updatedComment.PublicationId;
+            //commentModel.PublicationId = updatedComment.PublicationId;
             commentModel.UserId = updatedComment.UserId;
             commentModel.CreatedAt = updatedComment.CreatedAt;
 
@@ -90,15 +90,15 @@ namespace Api.Controllers
         }
 
         [HttpGet("publication/{publicationId}")]
-public async Task<IActionResult> GetByPublicationId([FromRoute] int publicationId)
-{
-    var comments = await _context.Comments
-        .Include(c => c.User) // Muy importante incluir User
-        .Where(c => c.PublicationId == publicationId)
-        .ToListAsync();
+        public async Task<IActionResult> GetByPublicationId([FromRoute] int publicationId)
+        {
+            var comments = await _context.Comments
+                .Include(c => c.User) // Muy importante incluir User
+                                      //.Where(c => c.PublicationId == publicationId)
+                .ToListAsync();
 
-    var commentsDto = comments.Select(comment => comment.ToCommentByPublicationDto());
-    return Ok(commentsDto);
-}
+            var commentsDto = comments.Select(comment => comment.ToCommentByPublicationDto());
+            return Ok(commentsDto);
+        }
     }
 }

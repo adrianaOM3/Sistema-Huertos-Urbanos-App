@@ -9,9 +9,9 @@ namespace Api.Mappers
         {
             return new CommentDto
             {
-                
+
                 UserId = comment.UserId,
-                PublicationId = comment.PublicationId,
+                //GardenId = comment.GardenId,
                 Description = comment.Description,
                 CreatedAt = comment.CreatedAt
             };
@@ -21,9 +21,9 @@ namespace Api.Mappers
         {
             return new Comment
             {
-               
+
                 UserId = commentDto.UserId,
-                PublicationId = commentDto.PublicationId,
+                //GardenId = commentDto.GardenId,
                 Description = commentDto.Description,
                 CreatedAt = commentDto.CreatedAt
             };
@@ -32,16 +32,16 @@ namespace Api.Mappers
         {
             return new Comment
             {
-            
+
                 UserId = commentDto.UserId,
-                PublicationId = commentDto.PublicationId,
+                //PublicationId = commentDto.PublicationId,
                 Description = commentDto.Description,
                 CreatedAt = commentDto.CreatedAt
             };
         }
 
 
-       public static CommentByPublicationDto ToCommentByPublicationDto(this Comment comment)
+        public static CommentByPublicationDto ToCommentByPublicationDto(this Comment comment)
         {
             return new CommentByPublicationDto
             {

@@ -26,58 +26,46 @@ namespace Api.Migrations
                 {
                     b.Property<int>("CalendarId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("calendarId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalendarId"));
 
                     b.Property<DateTime?>("CalendarDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("calendarDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CalendarId")
-                        .HasName("PK__Calendar__EE5496F63661BE91");
+                    b.HasKey("CalendarId");
 
-                    b.ToTable("Calendar", (string)null);
+                    b.ToTable("Calendars");
                 });
 
             modelBuilder.Entity("Api.Models.Comment", b =>
                 {
                     b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("commentId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
                     b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PublicationId")
-                        .HasColumnType("int")
-                        .HasColumnName("publicationId");
+                    b.Property<int?>("GardenId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
+                        .HasColumnType("int");
 
-                    b.HasKey("CommentId")
-                        .HasName("PK__Comments__CDDE919D049988A8");
+                    b.HasKey("CommentId");
 
-                    b.HasIndex(new[] { "PublicationId" }, "IX_Comments_publicationId");
+                    b.HasIndex("GardenId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Comments_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -86,39 +74,33 @@ namespace Api.Migrations
                 {
                     b.Property<int>("GardenId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("gardenId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GardenId"));
 
                     b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("text")
-                        .HasColumnName("ImageUrl");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PlantId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
+                        .HasColumnType("int");
 
-                    b.HasKey("GardenId")
-                        .HasName("PK__Gardens__C5BCE574A5896009");
+                    b.HasKey("GardenId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Gardens_userId");
+                    b.HasIndex("PlantId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Gardens");
                 });
@@ -127,29 +109,22 @@ namespace Api.Migrations
                 {
                     b.Property<int>("NotificationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("notificationId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
 
                     b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
+                        .HasColumnType("int");
 
-                    b.HasKey("NotificationId")
-                        .HasName("PK__Notifica__4BA5CEA97C271245");
+                    b.HasKey("NotificationId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Notifications_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });
@@ -158,41 +133,29 @@ namespace Api.Migrations
                 {
                     b.Property<int>("PestId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("pestId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PestId"));
 
                     b.Property<string>("CommonName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("commonName");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Host")
-                        .HasColumnType("text")
-                        .HasColumnName("host");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("text")
-                        .HasColumnName("imageUrl");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ScientificName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("scientificName");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Solution")
-                        .HasColumnType("text")
-                        .HasColumnName("solution");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PestId")
-                        .HasName("PK__Pests__7F10C1DDE81FD7F1");
+                    b.HasKey("PestId");
 
                     b.ToTable("Pests");
                 });
@@ -201,17 +164,14 @@ namespace Api.Migrations
                 {
                     b.Property<int>("PhotoId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("photoId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PhotoId"));
 
                     b.Property<string>("PhotoUrl")
-                        .HasColumnType("text")
-                        .HasColumnName("photoUrl");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PhotoId")
-                        .HasName("PK__Photos__547C322DFF40E13E");
+                    b.HasKey("PhotoId");
 
                     b.ToTable("Photos");
                 });
@@ -220,118 +180,26 @@ namespace Api.Migrations
                 {
                     b.Property<int>("PlantId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("plantId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlantId"));
 
-                    b.Property<string>("CareLevel")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("careLevel");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt")
-                        .HasDefaultValueSql("(getdate())");
-
                     b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FlowerDetails")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("flowerDetails");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FruitDetails")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("fruitDetails");
-
-                    b.Property<string>("GrowthCycle")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("growthCycle");
-
-                    b.Property<string>("GrowthRate")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("growthRate");
-
-                    b.Property<string>("HardinessZone")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("hardinessZone");
-
-                    b.Property<string>("HardinessZoneDescription")
-                        .HasColumnType("text")
-                        .HasColumnName("hardinessZoneDescription");
-
-                    b.Property<bool?>("HasLeaves")
-                        .HasColumnType("bit")
-                        .HasColumnName("hasLeaves");
-
-                    b.Property<bool?>("IsEdible")
-                        .HasColumnType("bit")
-                        .HasColumnName("isEdible");
-
-                    b.Property<bool?>("IsSaltTolerant")
-                        .HasColumnType("bit")
-                        .HasColumnName("isSaltTolerant");
-
-                    b.Property<DateTime?>("LastModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("lastModified")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("LeafColor")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("leafColor");
-
-                    b.Property<string>("MaintenanceLevel")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("maintenanceLevel");
+                    b.Property<int?>("PestId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PlantName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("plantName");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ScientificName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("scientificName");
+                    b.HasKey("PlantId");
 
-                    b.Property<string>("SunExposure")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("sunExposure");
-
-                    b.Property<string>("WateringFrequency")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("wateringFrequency");
-
-                    b.HasKey("PlantId")
-                        .HasName("PK__Plants__870532B032979DAC");
+                    b.HasIndex("PestId");
 
                     b.ToTable("Plants");
                 });
@@ -340,41 +208,25 @@ namespace Api.Migrations
                 {
                     b.Property<int>("PublicationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("publicationId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PublicationId"));
 
-                    b.Property<int?>("CommentId")
-                        .HasColumnType("int")
-                        .HasColumnName("commentId");
-
                     b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("Likes")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("likes");
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("title");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
+                        .HasColumnType("int");
 
-                    b.HasKey("PublicationId")
-                        .HasName("PK__Publicat__883D5CDF2EDC98F4");
+                    b.HasKey("PublicationId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Publications_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Publications");
                 });
@@ -383,35 +235,27 @@ namespace Api.Migrations
                 {
                     b.Property<int>("ReminderId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("reminderId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReminderId"));
 
                     b.Property<int?>("PlantId")
-                        .HasColumnType("int")
-                        .HasColumnName("plantId");
+                        .HasColumnType("int");
 
                     b.Property<DateOnly?>("ReminderDate")
-                        .HasColumnType("date")
-                        .HasColumnName("reminderDate");
+                        .HasColumnType("date");
 
                     b.Property<string>("TypeReminder")
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("typeReminder");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
+                        .HasColumnType("int");
 
-                    b.HasKey("ReminderId")
-                        .HasName("PK__Reminder__09DAAAE369C1E1AB");
+                    b.HasKey("ReminderId");
 
-                    b.HasIndex(new[] { "PlantId" }, "IX_Reminders_plantId");
+                    b.HasIndex("PlantId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Reminders_userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reminders");
                 });
@@ -420,111 +264,65 @@ namespace Api.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("userId");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<int?>("Age")
-                        .HasColumnType("int")
-                        .HasColumnName("age");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("createdAt")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("email");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("firstName");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("password");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("surname");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telephone")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("telephone");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId")
-                        .HasName("PK__Users__CB9A1CFF12AAA002");
-
-                    b.HasIndex(new[] { "Email" }, "UQ__Users__AB6E616439D41849")
-                        .IsUnique();
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PlantPest", b =>
-                {
-                    b.Property<int>("PlantId")
-                        .HasColumnType("int")
-                        .HasColumnName("plantId");
-
-                    b.Property<int>("PestId")
-                        .HasColumnType("int")
-                        .HasColumnName("pestId");
-
-                    b.HasKey("PlantId", "PestId")
-                        .HasName("PK__PlantPes__40F43EAD78645CA7");
-
-                    b.HasIndex(new[] { "PestId" }, "IX_PlantPests_pestId");
-
-                    b.ToTable("PlantPests", (string)null);
-                });
-
             modelBuilder.Entity("Api.Models.Comment", b =>
                 {
-                    b.HasOne("Api.Models.Publication", "Publication")
-                        .WithMany("Comments")
-                        .HasForeignKey("PublicationId")
-                        .HasConstraintName("FK__Comments__public__6A30C649");
+                    b.HasOne("Api.Models.Garden", "Garden")
+                        .WithMany()
+                        .HasForeignKey("GardenId");
 
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("FK__Comments__userId__693CA210");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Publication");
+                    b.Navigation("Garden");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Api.Models.Garden", b =>
                 {
+                    b.HasOne("Api.Models.Plant", null)
+                        .WithMany("PlantGardens")
+                        .HasForeignKey("PlantId");
+
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Gardens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("FK__Gardens__userId__534D60F1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -533,20 +331,23 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("FK__Notificat__userI__6E01572D");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Api.Models.Plant", b =>
+                {
+                    b.HasOne("Api.Models.Pest", null)
+                        .WithMany("Plants")
+                        .HasForeignKey("PestId");
                 });
 
             modelBuilder.Entity("Api.Models.Publication", b =>
                 {
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Publications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("FK__Publicati__userI__656C112C");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -555,46 +356,27 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Plant", "Plant")
                         .WithMany("Reminders")
-                        .HasForeignKey("PlantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("FK__Reminders__plant__5CD6CB2B");
+                        .HasForeignKey("PlantId");
 
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Reminders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("FK__Reminders__userI__5BE2A6F2");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Plant");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PlantPest", b =>
+            modelBuilder.Entity("Api.Models.Pest", b =>
                 {
-                    b.HasOne("Api.Models.Pest", null)
-                        .WithMany()
-                        .HasForeignKey("PestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__PlantPest__pestI__59063A47");
-
-                    b.HasOne("Api.Models.Plant", null)
-                        .WithMany()
-                        .HasForeignKey("PlantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__PlantPest__plant__5812160E");
+                    b.Navigation("Plants");
                 });
 
             modelBuilder.Entity("Api.Models.Plant", b =>
                 {
-                    b.Navigation("Reminders");
-                });
+                    b.Navigation("PlantGardens");
 
-            modelBuilder.Entity("Api.Models.Publication", b =>
-                {
-                    b.Navigation("Comments");
+                    b.Navigation("Reminders");
                 });
 
             modelBuilder.Entity("Api.Models.User", b =>

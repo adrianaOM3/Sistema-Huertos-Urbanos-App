@@ -66,22 +66,22 @@ namespace Api.Controllers
             // Usar el mapper para actualizar los valores
             var updatedPlant = PlantMapper.ToPlantFromUpdateDto(plantDto);
             plantModel.PlantName = updatedPlant.PlantName;
-            plantModel.ScientificName = updatedPlant.ScientificName;
+            //plantModel.ScientificName = updatedPlant.ScientificName;
             plantModel.Description = updatedPlant.Description;
-            plantModel.GrowthCycle = updatedPlant.GrowthCycle;
-            plantModel.WateringFrequency = updatedPlant.WateringFrequency;
-            plantModel.HardinessZone = updatedPlant.HardinessZone;
-            plantModel.HardinessZoneDescription = updatedPlant.HardinessZoneDescription;
-            plantModel.FlowerDetails = updatedPlant.FlowerDetails;
-            plantModel.SunExposure = updatedPlant.SunExposure;
-            plantModel.FruitDetails = updatedPlant.FruitDetails;
-            plantModel.IsEdible = updatedPlant.IsEdible;
-            plantModel.HasLeaves = updatedPlant.HasLeaves;
-            plantModel.LeafColor = updatedPlant.LeafColor;
-            plantModel.GrowthRate = updatedPlant.GrowthRate;
-            plantModel.MaintenanceLevel = updatedPlant.MaintenanceLevel;
-            plantModel.IsSaltTolerant = updatedPlant.IsSaltTolerant;
-            plantModel.CareLevel = updatedPlant.CareLevel;
+            //plantModel.GrowthCycle = updatedPlant.GrowthCycle;
+            //plantModel.WateringFrequency = updatedPlant.WateringFrequency;
+            //plantModel.HardinessZone = updatedPlant.HardinessZone;
+            //plantModel.HardinessZoneDescription = updatedPlant.HardinessZoneDescription;
+            //plantModel.FlowerDetails = updatedPlant.FlowerDetails;
+            //plantModel.SunExposure = updatedPlant.SunExposure;
+            //plantModel.FruitDetails = updatedPlant.FruitDetails;
+            //plantModel.IsEdible = updatedPlant.IsEdible;
+            //plantModel.HasLeaves = updatedPlant.HasLeaves;
+            //plantModel.LeafColor = updatedPlant.LeafColor;
+            //plantModel.GrowthRate = updatedPlant.GrowthRate;
+            //plantModel.MaintenanceLevel = updatedPlant.MaintenanceLevel;
+            //plantModel.IsSaltTolerant = updatedPlant.IsSaltTolerant;
+            //plantModel.CareLevel = updatedPlant.CareLevel;
 
             await _context.SaveChangesAsync();
 

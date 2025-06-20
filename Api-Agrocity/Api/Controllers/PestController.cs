@@ -110,7 +110,7 @@ namespace Api.Controllers
         }
 
         // GET: api/pest/byplant/5
-        [HttpGet("byplant/{plantId}")]
+        /*[HttpGet("byplant/{plantId}")]
         public async Task<IActionResult> GetByPlantId([FromRoute] int plantId)
         {
             if (plantId <= 0)
@@ -129,7 +129,8 @@ namespace Api.Controllers
             var pestDtos = plant.Pests.Select(p => p.ToPestDto());
 
             return Ok(pestDtos);
-        }
+
+        }*/
 
         // GET: api/pest/search
         [HttpGet("external")]
