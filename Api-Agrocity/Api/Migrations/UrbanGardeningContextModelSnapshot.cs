@@ -31,8 +31,8 @@ namespace Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalendarId"));
 
-                    b.Property<DateOnly?>("CalendarDate")
-                        .HasColumnType("date")
+                    b.Property<DateTime?>("CalendarDate")
+                        .HasColumnType("datetime2")
                         .HasColumnName("calendarDate");
 
                     b.Property<string>("Description")

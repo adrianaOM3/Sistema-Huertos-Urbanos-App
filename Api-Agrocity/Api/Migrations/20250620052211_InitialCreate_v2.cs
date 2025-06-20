@@ -5,7 +5,7 @@
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Prueba : Migration
+    public partial class InitialCreate_v2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

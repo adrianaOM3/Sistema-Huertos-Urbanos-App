@@ -59,7 +59,16 @@ namespace Api.Controllers
                 return Unauthorized(new { isSuccess = false, token = "" });
 
             var token = _utils.GenerarJWT(userFind);
-            return Ok(new { isSuccess = true, token });
+            return Ok(new {
+    isSuccess = true,
+    token,
+    userId = userFind.UserId,
+    name = userFind.Name,
+    firstName = userFind.FirstName,
+    surname = userFind.Surname,
+    
+});
+
         }
     }
 }

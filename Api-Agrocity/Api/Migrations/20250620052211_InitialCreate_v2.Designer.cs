@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(UrbanGardeningContext))]
-    [Migration("20250510060255_FixPestIdGeneration")]
-    partial class FixPestIdGeneration
+    [Migration("20250620052211_InitialCreate_v2")]
+    partial class InitialCreate_v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -462,12 +462,6 @@ namespace Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("password");
-
-                    b.Property<string>("PasswordResetToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ResetTokenExpires")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Surname")
                         .HasMaxLength(500)
