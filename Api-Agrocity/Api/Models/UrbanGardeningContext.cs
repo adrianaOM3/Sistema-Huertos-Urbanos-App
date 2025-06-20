@@ -37,7 +37,7 @@ public partial class UrbanGardeningContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=UrbanGardening;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=PC-JFRB\\SQLEXPRESS;Database=UrbanGardening;Trusted_Connection=True;TrustServerCertificate=True;");
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

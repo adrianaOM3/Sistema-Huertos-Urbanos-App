@@ -22,6 +22,7 @@ builder.Services.AddScoped<Utils>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
+
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
