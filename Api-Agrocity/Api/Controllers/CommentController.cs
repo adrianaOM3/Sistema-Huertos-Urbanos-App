@@ -64,9 +64,7 @@ namespace Api.Controllers
             var updatedComment = CommentMapper.ToCommentFromUpdateDto(commentDto);
 
             commentModel.Description = updatedComment.Description;
-            commentModel.GardenId = updatedComment.GardenId;
-            commentModel.UserId = updatedComment.UserId;
-            commentModel.CreatedAt = updatedComment.CreatedAt;
+    
 
             await _context.SaveChangesAsync();
 
@@ -89,16 +87,17 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("garden/{gardenId}")]
-public async Task<IActionResult> GetByGardenId([FromRoute] int GardenId)
+      [HttpGet("garden/{gardenId}")]
+public async Task<IActionResult> GetByGardenId([FromRoute] int gardenId)
 {
     var comments = await _context.Comments
-        .Include(c => c.User) // Muy importante incluir User
-        .Where(c => c.GardenId == GardenId)
+        .Include(c => c.User)
+        .Where(c => c.GardenId == gardenId)
         .ToListAsync();
 
     var commentsDto = comments.Select(comment => comment.ToCommentByPublicationDto());
     return Ok(commentsDto);
 }
+
     }
 }

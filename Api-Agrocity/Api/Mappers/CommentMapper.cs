@@ -9,7 +9,7 @@ namespace Api.Mappers
         {
             return new CommentDto
             {
-                
+                CommentId = comment.CommentId,
                 UserId = comment.UserId,
                 GardenId = comment.GardenId,
                 Description = comment.Description,
@@ -32,7 +32,7 @@ namespace Api.Mappers
         {
             return new Comment
             {
-            
+                CommentId = commentDto.CommentId,
                 UserId = commentDto.UserId,
                 GardenId = commentDto.GardenId,
                 Description = commentDto.Description,
@@ -45,6 +45,7 @@ namespace Api.Mappers
         {
             return new CommentByPublicationDto
             {
+                CommentId = comment.CommentId,
                 UserName = comment.User?.Name,
                 Description = comment.Description
             };
