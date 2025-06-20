@@ -232,8 +232,8 @@ namespace Api.Migrations
                 {
                     commentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    userId = table.Column<int>(type: "int", nullable: true),
-                    publicationId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    gardenId = table.Column<int>(type: "int", nullable: true),
                     description = table.Column<string>(type: "text", nullable: true),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "(getdate())")
                 },
@@ -241,27 +241,27 @@ namespace Api.Migrations
                 {
                     table.PrimaryKey("PK__Comments__CDDE919D049988A8", x => x.commentId);
                     table.ForeignKey(
-                        name: "FK__Comments__public__6A30C649",
-                        column: x => x.publicationId,
+                        name: "FK__Comments__gardenId",
+                        column: x => x.gardenId,
                         principalTable: "Gardens",
                         principalColumn: "gardenId");
                     table.ForeignKey(
                         name: "FK__Comments__userId__693CA210",
-                        column: x => x.userId,
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "userId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_publicationId",
+                name: "IX_Comments_gardenId",
                 table: "Comments",
-                column: "publicationId");
+                column: "gardenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_userId",
                 table: "Comments",
-                column: "userId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Gardens_userId",

@@ -70,12 +70,12 @@ public partial class UrbanGardeningContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
-            entity.Property(e => e.GardenId).HasColumnName("publicationId");
-            entity.Property(e => e.UserId).HasColumnName("userId");
+           entity.Property(e => e.GardenId).HasColumnName("gardenId"); // nombre correcto en la BD
 
-            entity.HasOne(d => d.Garden).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.GardenId)
-                .HasConstraintName("FK__Comments__public__6A30C649");
+entity.HasOne(d => d.Garden).WithMany(p => p.Comments)
+    .HasForeignKey(d => d.GardenId)
+    .HasConstraintName("FK__Comments__gardenId");
+
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
