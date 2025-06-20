@@ -56,7 +56,9 @@ namespace Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("GardenId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("gardenId");
+
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -288,6 +290,12 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
@@ -302,8 +310,9 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Comment", b =>
                 {
                     b.HasOne("Api.Models.Garden", "Garden")
-                        .WithMany()
-                        .HasForeignKey("GardenId");
+                        .WithMany("Comments")
+                        .HasForeignKey("GardenId")
+                        .HasConstraintName("FK__Comments__gardenId");
 
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Comments")
@@ -370,6 +379,11 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Pest", b =>
                 {
                     b.Navigation("Plants");
+                });
+
+            modelBuilder.Entity("Api.Models.Garden", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Api.Models.Plant", b =>

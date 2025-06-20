@@ -45,6 +45,7 @@ namespace Api.Mappers
         {
             return new CommentByPublicationDto
             {
+                CommentId = comment.CommentId,
                 UserName = comment.User?.Name,
                 Description = comment.Description
             };

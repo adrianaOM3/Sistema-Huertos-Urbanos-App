@@ -8,9 +8,7 @@ namespace Api.Dtos.Comment
 
         public string? UserName { get; set; } 
 
-        public int? PublicationId { get; set; }
-
-         public string? PublicationTitle { get; set; }
+        public int? GardenId { get; set; }
 
         public string? Description { get; set; }
 
