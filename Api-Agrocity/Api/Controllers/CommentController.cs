@@ -89,8 +89,8 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("publication/{publicationId}")]
-public async Task<IActionResult> GetByPublicationId([FromRoute] int GardenId)
+        [HttpGet("garden/{gardenId}")]
+public async Task<IActionResult> GetByGardenId([FromRoute] int GardenId)
 {
     var comments = await _context.Comments
         .Include(c => c.User) // Muy importante incluir User
