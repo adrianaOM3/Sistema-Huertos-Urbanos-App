@@ -37,6 +37,7 @@ namespace Api.Mappers
                 GardenId = commentDto.GardenId,
                 Description = commentDto.Description,
                 CreatedAt = commentDto.CreatedAt
+                
             };
         }
 
@@ -47,7 +48,11 @@ namespace Api.Mappers
             {
                 CommentId = comment.CommentId,
                 UserName = comment.User?.Name,
-                Description = comment.Description
+                Description = comment.Description,
+                UserId = comment.UserId ?? 0,
+                Name = comment.User?.Name,              
+                FirstName = comment.User?.FirstName,     
+                Surname = comment.User?.Surname 
             };
         }
     }

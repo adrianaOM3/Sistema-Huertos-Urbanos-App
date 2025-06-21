@@ -18,4 +18,5 @@ public partial class Comment
     public virtual Garden? Garden { get; set; }
 
     public virtual User? User { get; set; }
+    
 }
