@@ -117,30 +117,40 @@ namespace Api.Controllers
                 if (existingGarden == null)
                     return NotFound(new { message = $"No se encontró un jardín con ID {gardenId}." });
 
-
                 var userExists = await _context.Users.AnyAsync(u => u.UserId == gardenDto.UserId);
                 if (!userExists)
                     return BadRequest(new { message = $"No se encontró un usuario con ID {gardenDto.UserId}." });
-
 
                 existingGarden.UserId = gardenDto.UserId;
                 existingGarden.Name = gardenDto.Name;
                 existingGarden.Description = gardenDto.Description;
                 existingGarden.CreatedAt = gardenDto.CreatedAt;
 
-
-
+                // Procesar nueva imagen si viene una
                 if (gardenDto.File != null && gardenDto.File.Length > 0)
                 {
-                    var fileName = existingGarden.GardenId.ToString() + Path.GetExtension(gardenDto.File.FileName);
-                    var filePath = Path.Combine(_imagePath, fileName);
+                    // Generar un nombre único para la nueva imagen
+                    var uniqueFileName = $"{existingGarden.GardenId}_{Guid.NewGuid()}{Path.GetExtension(gardenDto.File.FileName)}";
+                    var newFilePath = Path.Combine(_imagePath, uniqueFileName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    // Guardar la nueva imagen en disco
+                    using (var stream = new FileStream(newFilePath, FileMode.Create))
                     {
                         await gardenDto.File.CopyToAsync(stream);
                     }
 
-                    existingGarden.ImageUrl = fileName;
+                    // Eliminar imagen anterior si existe
+                    if (!string.IsNullOrEmpty(existingGarden.ImageUrl))
+                    {
+                        var oldImagePath = Path.Combine(_imagePath, existingGarden.ImageUrl);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Asignar nuevo nombre de imagen
+                    existingGarden.ImageUrl = uniqueFileName;
                 }
 
                 _context.Gardens.Update(existingGarden);
@@ -157,6 +167,7 @@ namespace Api.Controllers
                 return StatusCode(500, new { message = $"Error interno al actualizar el jardín: {ex.Message}" });
             }
         }
+
 
 
 
