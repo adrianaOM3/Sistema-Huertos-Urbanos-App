@@ -37,7 +37,7 @@ public partial class UrbanGardeningContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
-        => optionsBuilder.UseSqlServer("Server=PC-JFRB\\SQLEXPRESS;Database=UrbanGardening;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=MAIK24;Database=UrbanGardening;Trusted_Connection=True;TrustServerCertificate=True;");
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -59,7 +59,7 @@ public partial class UrbanGardeningContext : DbContext
         {
             entity.HasKey(e => e.CommentId).HasName("PK__Comments__CDDE919D049988A8");
 
-           // entity.HasIndex(e => e.PublicationId, "IX_Comments_publicationId");
+            // entity.HasIndex(e => e.PublicationId, "IX_Comments_publicationId");
 
             entity.HasIndex(e => e.UserId, "IX_Comments_userId");
 
@@ -70,11 +70,11 @@ public partial class UrbanGardeningContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
-           entity.Property(e => e.GardenId).HasColumnName("gardenId"); // nombre correcto en la BD
+            entity.Property(e => e.GardenId).HasColumnName("gardenId"); // nombre correcto en la BD
 
-entity.HasOne(d => d.Garden).WithMany(p => p.Comments)
-    .HasForeignKey(d => d.GardenId)
-    .HasConstraintName("FK__Comments__gardenId");
+            entity.HasOne(d => d.Garden).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.GardenId)
+                .HasConstraintName("FK__Comments__gardenId");
 
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
