@@ -56,9 +56,7 @@ namespace Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("GardenId")
-                        .HasColumnType("int")
-                        .HasColumnName("gardenId");
-
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -311,8 +309,7 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Garden", "Garden")
                         .WithMany("Comments")
-                        .HasForeignKey("GardenId")
-                        .HasConstraintName("FK__Comments__gardenId");
+                        .HasForeignKey("GardenId");
 
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Comments")
@@ -376,14 +373,14 @@ namespace Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Api.Models.Pest", b =>
-                {
-                    b.Navigation("Plants");
-                });
-
             modelBuilder.Entity("Api.Models.Garden", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("Api.Models.Pest", b =>
+                {
+                    b.Navigation("Plants");
                 });
 
             modelBuilder.Entity("Api.Models.Plant", b =>

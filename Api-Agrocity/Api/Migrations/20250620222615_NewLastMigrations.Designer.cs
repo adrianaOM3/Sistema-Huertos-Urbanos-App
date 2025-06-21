@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(UrbanGardeningContext))]
-    [Migration("20250620071826_NewMigration")]
-    partial class NewMigration
+    [Migration("20250620222615_NewLastMigrations")]
+    partial class NewLastMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,6 +291,12 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
@@ -305,7 +311,7 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Comment", b =>
                 {
                     b.HasOne("Api.Models.Garden", "Garden")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("GardenId");
 
                     b.HasOne("Api.Models.User", "User")
@@ -368,6 +374,11 @@ namespace Api.Migrations
                     b.Navigation("Plant");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Api.Models.Garden", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Api.Models.Pest", b =>
