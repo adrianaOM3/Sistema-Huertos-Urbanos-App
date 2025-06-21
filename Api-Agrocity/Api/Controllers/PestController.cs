@@ -110,7 +110,7 @@ namespace Api.Controllers
         }
 
         // GET: api/pest/byplant/5
-        [HttpGet("byplant/{plantId}")]
+        /*[HttpGet("byplant/{plantId}")]
         public async Task<IActionResult> GetByPlantId([FromRoute] int plantId)
         {
             if (plantId <= 0)
@@ -129,7 +129,7 @@ namespace Api.Controllers
             var pestDtos = plant.Pests.Select(p => p.ToPestDto());
 
             return Ok(pestDtos);
-        }
+        }*/
 
         // GET: api/pest/search
         [HttpGet("external")]
@@ -139,7 +139,7 @@ namespace Api.Controllers
             var allPests = new List<ExternalPestDto>();
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            for (int page = 1; page <= 3; page++)
+            for (int page = 1; page <= 1; page++)
             {
                 var response = await httpClient.GetAsync($"https://perenual.com/api/pest-disease-list?key=sk-NoVy681ef04e0e60c10347&page={page}");
 

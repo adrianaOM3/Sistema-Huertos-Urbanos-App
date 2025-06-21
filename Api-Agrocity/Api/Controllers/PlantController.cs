@@ -1,17 +1,18 @@
 using Api.Models;
 using Api.Dtos.Plant;
-using Api.Mappers; // Asegúrate de incluir la clase PlantMapper
+using Api.Mappers; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace Api.Controllers
 {
     [Route("api/plants")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class PlantController : ControllerBase
     {
@@ -66,23 +67,8 @@ namespace Api.Controllers
             // Usar el mapper para actualizar los valores
             var updatedPlant = PlantMapper.ToPlantFromUpdateDto(plantDto);
             plantModel.PlantName = updatedPlant.PlantName;
-            plantModel.ScientificName = updatedPlant.ScientificName;
             plantModel.Description = updatedPlant.Description;
-            plantModel.GrowthCycle = updatedPlant.GrowthCycle;
-            plantModel.WateringFrequency = updatedPlant.WateringFrequency;
-            plantModel.HardinessZone = updatedPlant.HardinessZone;
-            plantModel.HardinessZoneDescription = updatedPlant.HardinessZoneDescription;
-            plantModel.FlowerDetails = updatedPlant.FlowerDetails;
-            plantModel.SunExposure = updatedPlant.SunExposure;
-            plantModel.FruitDetails = updatedPlant.FruitDetails;
-            plantModel.IsEdible = updatedPlant.IsEdible;
-            plantModel.HasLeaves = updatedPlant.HasLeaves;
-            plantModel.LeafColor = updatedPlant.LeafColor;
-            plantModel.GrowthRate = updatedPlant.GrowthRate;
-            plantModel.MaintenanceLevel = updatedPlant.MaintenanceLevel;
-            plantModel.IsSaltTolerant = updatedPlant.IsSaltTolerant;
-            plantModel.CareLevel = updatedPlant.CareLevel;
-
+            plantModel.ImageUrl = updatedPlant.ImageUrl;
             await _context.SaveChangesAsync();
 
             return Ok(PlantMapper.ToDto(plantModel)); // Usar el mapper para convertir a DTO
@@ -103,5 +89,95 @@ namespace Api.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("external")]
+        public async Task<IActionResult> GetExternalPlants()
+        {
+            var httpClient = new HttpClient();
+            var resultPlants = new List<PlantDto>();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            for (int page = 1; page <= 3; page++)
+            {
+                var response = await httpClient.GetAsync($"https://perenual.com/api/v2/species-list?key=sk-i8ue68564c324ae8711104&page={page}");
+
+                if (!response.IsSuccessStatusCode)
+                    return StatusCode((int)response.StatusCode, $"Error al obtener plantas en la página {page}");
+
+                var json = await response.Content.ReadAsStringAsync();
+                var wrapper = JsonSerializer.Deserialize<ExternalPlantWrapper>(json, options);
+
+                if (wrapper?.data == null || !wrapper.data.Any())
+                    break;
+
+                foreach (var basicPlant in wrapper.data)
+                {
+                    try
+                    {
+                        var detailResponse = await httpClient.GetAsync($"https://perenual.com/api/v2/species/details/{basicPlant.Id}?key=sk-i8ue68564c324ae8711104");
+                        if (!detailResponse.IsSuccessStatusCode)
+                            continue;
+
+                        var detailJson = await detailResponse.Content.ReadAsStringAsync();
+                        var detailData = JsonSerializer.Deserialize<ExternalPlantDto>(detailJson, options);
+
+                        if (detailData != null)
+                        {
+                            // Traducción del nombre común y descripción
+                            var translatedName = await TranslateToSpanish(basicPlant.CommonName ?? "Planta sin nombre");
+                            var translatedDescription = await TranslateToSpanish(detailData.Description ?? "");
+
+                            resultPlants.Add(new PlantDto
+                            {
+                                PlantId = basicPlant.Id,
+                                PlantName = translatedName,
+                                Description = translatedDescription,
+                                ImageUrl = basicPlant.DefaultImage?.RegularUrl
+                            });
+                        }
+                    }
+                    catch
+                    {
+                        continue; // ignoramos errores por planta
+                    }
+                }
+            }
+
+            return Ok(resultPlants);
+        }
+
+
+        private async Task<string> TranslateToSpanish(string englishText)
+        {
+            if (string.IsNullOrWhiteSpace(englishText))
+                return "Sin descripción disponible";
+
+            using var client = new HttpClient();
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("q", englishText),
+                new KeyValuePair<string, string>("source", "en"),
+                new KeyValuePair<string, string>("target", "es"),
+                new KeyValuePair<string, string>("format", "text")
+            });
+
+            try
+            {
+                var response = await client.PostAsync("https://libretranslate.com/translate", content);
+                if (!response.IsSuccessStatusCode)
+                    return englishText; // fallback
+
+                var json = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<Models.LibreTranslateResponse>(json);
+                return result?.TranslatedText ?? englishText;
+            }
+            catch
+            {
+                return englishText;
+            }
+        }
+
+
+
     }
 }
