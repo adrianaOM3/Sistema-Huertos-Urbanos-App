@@ -16,4 +16,6 @@ public partial class Plant
     public virtual ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
 
     public virtual ICollection<Garden> PlantGardens { get; set; } = new List<Garden>();
+
+    public virtual ICollection<Pest> Pests { get; set; } = new List<Pest>();
 }

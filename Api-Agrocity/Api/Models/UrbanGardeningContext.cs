@@ -172,70 +172,22 @@ entity.HasOne(d => d.Garden).WithMany(p => p.Comments)
         {
             entity.HasKey(e => e.PlantId).HasName("PK__Plants__870532B032979DAC");
 
-            entity.Property(e => e.PlantId).HasColumnName("plantId");
-            entity.Property(e => e.CareLevel)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("careLevel");
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnName("createdAt");
-            entity.Property(e => e.Description)
-                .HasColumnType("text")
-                .HasColumnName("description");
-            entity.Property(e => e.FlowerDetails)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("flowerDetails");
-            entity.Property(e => e.FruitDetails)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("fruitDetails");
-            entity.Property(e => e.GrowthCycle)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("growthCycle");
-            entity.Property(e => e.GrowthRate)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("growthRate");
-            entity.Property(e => e.HardinessZone)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("hardinessZone");
-            entity.Property(e => e.HardinessZoneDescription)
-                .HasColumnType("text")
-                .HasColumnName("hardinessZoneDescription");
-            entity.Property(e => e.HasLeaves).HasColumnName("hasLeaves");
-            entity.Property(e => e.IsEdible).HasColumnName("isEdible");
-            entity.Property(e => e.IsSaltTolerant).HasColumnName("isSaltTolerant");
-            entity.Property(e => e.LastModified)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnName("lastModified");
-            entity.Property(e => e.LeafColor)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("leafColor");
-            entity.Property(e => e.MaintenanceLevel)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("maintenanceLevel");
+            entity.Property(e => e.PlantId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("plantId");
+
             entity.Property(e => e.PlantName)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("plantName");
-            entity.Property(e => e.ScientificName)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("scientificName");
-            entity.Property(e => e.SunExposure)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("sunExposure");
-            entity.Property(e => e.WateringFrequency)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("wateringFrequency");
+
+            entity.Property(e => e.Description)
+                .HasColumnType("text")
+                .HasColumnName("description");
+
+            entity.Property(e => e.ImageUrl)
+                .HasColumnType("text")
+                .HasColumnName("imageUrl");
 
             entity.HasMany(d => d.Pests).WithMany(p => p.Plants)
                 .UsingEntity<Dictionary<string, object>>(
@@ -255,6 +207,7 @@ entity.HasOne(d => d.Garden).WithMany(p => p.Comments)
                         j.IndexerProperty<int>("PestId").HasColumnName("pestId");
                     });
         });
+
 
         modelBuilder.Entity<Publication>(entity =>
         {
