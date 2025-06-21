@@ -139,9 +139,9 @@ namespace Api.Controllers
             var allPests = new List<ExternalPestDto>();
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            for (int page = 1; page <= 2; page++)
+            for (int page = 1; page <= 1; page++)
             {
-                var response = await httpClient.GetAsync($"https://perenual.com/api/pest-disease-list?key=sk-NoVy681ef04e0e60c10347&page={page}");
+                var response = await httpClient.GetAsync($"https://perenual.com/api/pest-disease-list?key=sk-72t4685669868760011106&page={page}");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -153,7 +153,7 @@ namespace Api.Controllers
 
                 if (wrapper?.data == null || !wrapper.data.Any())
                 {
-                    break; // Ya no hay más datos
+                    break;
                 }
 
                 allPests.AddRange(wrapper.data);

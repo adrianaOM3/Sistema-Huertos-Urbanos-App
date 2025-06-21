@@ -78,12 +78,12 @@ namespace Api.Controllers
         public async Task<IActionResult> GetExternalPlants()
         {
             var httpClient = new HttpClient();
-            var resultPlants = new List<PlantDto>();
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var allPlants = new List<ExternalPlantDto>();
 
-            for (int page = 1; page <= 2; page++)
+            for (int page = 1; page <= 1; page++)
             {
-                var response = await httpClient.GetAsync($"https://perenual.com/api/v2/species-list?key=sk-i8ue68564c324ae8711104&page={page}");
+                var response = await httpClient.GetAsync($"https://perenual.com/api/v2/species-list?key=sk-72t4685669868760011106&page={page}");
 
                 if (!response.IsSuccessStatusCode)
                     return StatusCode((int)response.StatusCode, $"Error al obtener plantas en la página {page}");
@@ -94,36 +94,11 @@ namespace Api.Controllers
                 if (wrapper?.data == null || !wrapper.data.Any())
                     break;
 
-                foreach (var basicPlant in wrapper.data)
-                {
-                    try
-                    {
-                        var detailResponse = await httpClient.GetAsync($"https://perenual.com/api/v2/species/details/{basicPlant.Id}?key=sk-i8ue68564c324ae8711104");
-                        if (!detailResponse.IsSuccessStatusCode)
-                            continue;
-
-                        var detailJson = await detailResponse.Content.ReadAsStringAsync();
-                        var detailData = JsonSerializer.Deserialize<ExternalPlantDto>(detailJson, options);
-
-                        if (detailData != null)
-                        {
-                            resultPlants.Add(new PlantDto
-                            {
-                                PlantId = basicPlant.Id,
-                                PlantName = basicPlant.CommonName ?? "Planta sin nombre",
-                                Description = detailData.Description ?? "Sin descripción disponible",
-                                ImageUrl = basicPlant.DefaultImage?.RegularUrl
-                            });
-                        }
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
+                allPlants.AddRange(wrapper.data);
             }
 
-            return Ok(resultPlants);
+            var result = allPlants.Select(p => p.ToDto()).ToList();
+            return Ok(result);
         }
     }
 }
